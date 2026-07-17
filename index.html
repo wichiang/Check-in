@@ -30,13 +30,19 @@
     --font-display:'Space Grotesk','Noto Sans TC',sans-serif;
     --font-body:'Inter','Noto Sans TC',sans-serif;
     --font-mono:'IBM Plex Mono',monospace;
+    --fs-scale:1;
   }
+  html[data-fontsize="small"]{ --fs-scale:0.875; }
+  html[data-fontsize="medium"]{ --fs-scale:1; }
+  html[data-fontsize="large"]{ --fs-scale:1.2; }
+  html{ scroll-behavior:smooth; }
   *{box-sizing:border-box; margin:0; padding:0;}
   body{
     font-family:var(--font-body);
     background:var(--bg);
     color:var(--text);
     -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
   }
   ::selection{background:var(--amber-light); color:var(--amber-dark);}
   button{font-family:inherit; cursor:pointer;}
@@ -46,32 +52,54 @@
   .mode-bar{
     position:sticky; top:0; z-index:100;
     display:flex; align-items:center; justify-content:center;
-    gap:0; padding:14px 0; background:var(--navy);
+    gap:18px; padding:12px 20px; background:var(--navy);
     border-bottom:1px solid rgba(255,255,255,0.08);
+    flex-wrap:wrap; row-gap:10px;
   }
   .mode-bar .brand{
-    position:absolute; left:24px; top:50%; transform:translateY(-50%);
     display:flex; align-items:center; gap:8px;
-    color:#fff; font-family:var(--font-display); font-weight:700; font-size:15px;
-    letter-spacing:0.2px;
+    color:#fff; font-family:var(--font-display); font-weight:700; font-size:calc(15px * var(--fs-scale));
+    letter-spacing:0.2px; margin-right:auto;
   }
-  .mode-bar .brand .dot{width:8px;height:8px;border-radius:2px;background:var(--amber); transform:rotate(45deg);}
+  .mode-bar .brand .dot{width:8px;height:8px;border-radius:2px;background:var(--amber); transform:rotate(45deg); flex-shrink:0;}
   .segmented{
     display:flex; background:rgba(255,255,255,0.08); border-radius:999px; padding:4px; gap:2px;
   }
   .segmented button{
     border:none; background:transparent; color:rgba(255,255,255,0.65);
-    font-size:13.5px; font-weight:600; padding:9px 20px; border-radius:999px;
-    transition:all .2s ease; letter-spacing:.2px;
+    font-size:calc(13.5px * var(--fs-scale)); font-weight:600; padding:9px 20px; border-radius:999px;
+    transition:all .2s ease; letter-spacing:.2px; white-space:nowrap;
   }
   .segmented button.active{background:#fff; color:var(--navy);}
 
+  .fs-toggle{display:flex; align-items:center; gap:8px;}
+  .fs-toggle .lbl{color:rgba(255,255,255,0.45); font-size:11px; font-weight:600; letter-spacing:.3px; white-space:nowrap;}
+  .fs-toggle .fs-group{display:flex; background:rgba(255,255,255,0.08); border-radius:999px; padding:4px; gap:2px;}
+  .fs-toggle button{
+    border:none; background:transparent; color:rgba(255,255,255,0.65); font-weight:700; border-radius:999px;
+    padding:6px 11px; font-family:var(--font-display); line-height:1; transition:all .15s ease;
+  }
+  .fs-toggle button:nth-child(1){font-size:11px;}
+  .fs-toggle button:nth-child(2){font-size:13.5px;}
+  .fs-toggle button:nth-child(3){font-size:16px;}
+  .fs-toggle button.active{background:var(--amber); color:#fff;}
+
+  .hamburger{
+    display:none; width:36px; height:36px; border-radius:9px; border:1px solid var(--border); background:#fff;
+    align-items:center; justify-content:center; flex-shrink:0; color:var(--text);
+  }
+  .hamburger svg{width:18px;height:18px;}
+  .sidebar-backdrop{display:none; position:fixed; inset:0; background:rgba(10,14,28,0.5); z-index:140;}
+  .sidebar-backdrop.show{display:block;}
+  .table-wrap{overflow-x:auto; -webkit-overflow-scrolling:touch;}
+  .table-wrap table{min-width:640px;}
+
   /* ===================== ADMIN SHELL ===================== */
-  #admin-shell{display:grid; grid-template-columns:250px 1fr; min-height:calc(100vh - 57px);}
+  #admin-shell{display:grid; grid-template-columns:250px 1fr; min-height:calc(100vh - var(--modebar-h, 57px));}
 
   .sidebar{
-    background:var(--navy); color:#fff; padding:22px 14px; position:sticky; top:57px; align-self:start;
-    height:calc(100vh - 57px); overflow-y:auto;
+    background:var(--navy); color:#fff; padding:22px 14px; position:sticky; top:var(--modebar-h, 57px); align-self:start;
+    height:calc(100vh - var(--modebar-h, 57px)); overflow-y:auto; transition:transform .25s ease; z-index:150;
   }
   .sidebar .logo{
     display:flex; align-items:center; gap:10px; padding:6px 10px 22px 10px;
@@ -82,16 +110,16 @@
     display:flex; align-items:center; justify-content:center; flex-shrink:0;
   }
   .logo-mark svg{width:18px;height:18px;}
-  .logo-text{font-family:var(--font-display); font-weight:700; font-size:14.5px; line-height:1.25;}
-  .logo-text span{display:block; font-family:var(--font-body); font-weight:400; font-size:10.5px; color:rgba(255,255,255,0.5); letter-spacing:.4px;}
+  .logo-text{font-family:var(--font-display); font-weight:700; font-size:calc(14.5px * var(--fs-scale)); line-height:1.25;}
+  .logo-text span{display:block; font-family:var(--font-body); font-weight:400; font-size:calc(10.5px * var(--fs-scale)); color:rgba(255,255,255,0.5); letter-spacing:.4px;}
 
   .nav-group-label{
-    font-size:10.5px; color:rgba(255,255,255,0.35); text-transform:uppercase; letter-spacing:1px;
+    font-size:calc(10.5px * var(--fs-scale)); color:rgba(255,255,255,0.35); text-transform:uppercase; letter-spacing:1px;
     padding:14px 12px 6px;
   }
   .nav-item{
     display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:9px;
-    color:rgba(255,255,255,0.72); font-size:13.5px; font-weight:500; cursor:pointer;
+    color:rgba(255,255,255,0.72); font-size:calc(13.5px * var(--fs-scale)); font-weight:500; cursor:pointer;
     transition:background .15s ease, color .15s ease; margin-bottom:2px; border-left:3px solid transparent;
   }
   .nav-item svg{width:17px;height:17px; flex-shrink:0; opacity:.85;}
@@ -103,31 +131,31 @@
 
   .topbar{
     height:64px; background:var(--surface); border-bottom:1px solid var(--border);
-    display:flex; align-items:center; justify-content:space-between; padding:0 28px; position:sticky; top:57px; z-index:10;
+    display:flex; align-items:center; justify-content:space-between; padding:0 28px; position:sticky; top:var(--modebar-h, 57px); z-index:10; gap:12px;
   }
-  .breadcrumb{font-size:13px; color:var(--text-3); display:flex; align-items:center; gap:6px;}
-  .breadcrumb b{color:var(--text); font-weight:600; font-size:15px; font-family:var(--font-display);}
-  .topbar-right{display:flex; align-items:center; gap:16px;}
+  .breadcrumb{font-size:calc(13px * var(--fs-scale)); color:var(--text-3); display:flex; align-items:center; gap:6px; min-width:0;}
+  .breadcrumb b{color:var(--text); font-weight:600; font-size:calc(15px * var(--fs-scale)); font-family:var(--font-display); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .topbar-right{display:flex; align-items:center; gap:16px; flex-shrink:0;}
   .live-pill{
     display:flex; align-items:center; gap:6px; background:var(--success-light); color:var(--success);
-    font-size:12px; font-weight:600; padding:5px 11px; border-radius:999px;
+    font-size:calc(12px * var(--fs-scale)); font-weight:600; padding:5px 11px; border-radius:999px;
   }
   .live-pill .pulse{width:6px;height:6px;border-radius:50%;background:var(--success); animation:pulse 1.6s infinite;}
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,158,99,.5);}70%{box-shadow:0 0 0 6px rgba(47,158,99,0);}100%{box-shadow:0 0 0 0 rgba(47,158,99,0);}}
   .avatar{
     width:34px;height:34px;border-radius:50%; background:var(--navy-3); color:#fff; display:flex; align-items:center;
-    justify-content:center; font-size:12.5px; font-weight:600; font-family:var(--font-display);
+    justify-content:center; font-size:calc(12.5px * var(--fs-scale)); font-weight:600; font-family:var(--font-display);
   }
 
   .page{padding:28px 32px 60px; display:none;}
   .page.active{display:block;}
   .page-header{display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:22px; flex-wrap:wrap; gap:12px;}
-  .page-title{font-family:var(--font-display); font-size:23px; font-weight:700;}
-  .page-sub{color:var(--text-2); font-size:13px; margin-top:4px;}
+  .page-title{font-family:var(--font-display); font-size:calc(23px * var(--fs-scale)); font-weight:700;}
+  .page-sub{color:var(--text-2); font-size:calc(13px * var(--fs-scale)); margin-top:4px;}
 
   .btn{
     display:inline-flex; align-items:center; gap:7px; border:none; border-radius:9px; padding:10px 16px;
-    font-size:13.5px; font-weight:600; transition:all .15s ease; white-space:nowrap;
+    font-size:calc(13.5px * var(--fs-scale)); font-weight:600; transition:all .15s ease; white-space:nowrap;
   }
   .btn svg{width:15px;height:15px;}
   .btn-primary{background:var(--amber); color:#fff;}
@@ -136,7 +164,7 @@
   .btn-outline:hover{background:var(--bg);}
   .btn-navy{background:var(--navy); color:#fff;}
   .btn-navy:hover{background:var(--navy-2);}
-  .btn-sm{padding:7px 12px; font-size:12.5px;}
+  .btn-sm{padding:7px 12px; font-size:calc(12.5px * var(--fs-scale));}
 
   .card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:22px;}
   .grid{display:grid; gap:18px;}
@@ -148,15 +176,15 @@
     width:38px;height:38px;border-radius:9px; display:flex; align-items:center; justify-content:center; margin-bottom:14px;
   }
   .stat-icon svg{width:19px;height:19px;}
-  .stat-value{font-family:var(--font-mono); font-size:28px; font-weight:600; letter-spacing:-.5px;}
-  .stat-label{font-size:12.5px; color:var(--text-2); margin-top:4px;}
-  .stat-delta{position:absolute; top:22px; right:22px; font-size:11.5px; font-weight:600; padding:3px 8px; border-radius:999px;}
+  .stat-value{font-family:var(--font-mono); font-size:calc(28px * var(--fs-scale)); font-weight:600; letter-spacing:-.5px;}
+  .stat-label{font-size:calc(12.5px * var(--fs-scale)); color:var(--text-2); margin-top:4px;}
+  .stat-delta{position:absolute; top:22px; right:22px; font-size:calc(11.5px * var(--fs-scale)); font-weight:600; padding:3px 8px; border-radius:999px;}
   .delta-up{background:var(--success-light); color:var(--success);}
   .delta-down{background:var(--danger-light); color:var(--danger);}
 
-  table{width:100%; border-collapse:collapse; font-size:13px;}
+  table{width:100%; border-collapse:collapse; font-size:calc(13px * var(--fs-scale));}
   thead th{
-    text-align:left; font-size:11.5px; text-transform:uppercase; letter-spacing:.5px; color:var(--text-3);
+    text-align:left; font-size:calc(11.5px * var(--fs-scale)); text-transform:uppercase; letter-spacing:.5px; color:var(--text-3);
     font-weight:600; padding:0 14px 10px; border-bottom:1px solid var(--border);
   }
   tbody td{padding:13px 14px; border-bottom:1px solid var(--border); color:var(--text);}
@@ -165,12 +193,12 @@
   .cell-name{display:flex; align-items:center; gap:10px;}
   .cell-avatar{
     width:30px;height:30px;border-radius:50%; background:var(--navy-3); color:#fff; display:flex; align-items:center;
-    justify-content:center; font-size:11px; font-weight:600; flex-shrink:0;
+    justify-content:center; font-size:calc(11px * var(--fs-scale)); font-weight:600; flex-shrink:0;
   }
-  .cell-sub{font-size:11.5px; color:var(--text-3);}
-  .mono{font-family:var(--font-mono); font-size:12.5px; color:var(--text-2);}
+  .cell-sub{font-size:calc(11.5px * var(--fs-scale)); color:var(--text-3);}
+  .mono{font-family:var(--font-mono); font-size:calc(12.5px * var(--fs-scale)); color:var(--text-2);}
 
-  .badge{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:600; padding:4px 10px; border-radius:999px;}
+  .badge{display:inline-flex; align-items:center; gap:5px; font-size:calc(11.5px * var(--fs-scale)); font-weight:600; padding:4px 10px; border-radius:999px;}
   .badge-dot{width:5px;height:5px;border-radius:50%;}
   .badge-green{background:var(--success-light); color:var(--success);}
   .badge-green .badge-dot{background:var(--success);}
@@ -191,42 +219,42 @@
   .toolbar{display:flex; align-items:center; gap:10px; margin-bottom:16px; flex-wrap:wrap;}
   .search-box{
     display:flex; align-items:center; gap:8px; background:#fff; border:1px solid var(--border); border-radius:9px;
-    padding:9px 13px; font-size:13px; color:var(--text-2); flex:1; min-width:220px; max-width:340px;
+    padding:9px 13px; font-size:calc(13px * var(--fs-scale)); color:var(--text-2); flex:1; min-width:220px; max-width:340px;
   }
   .search-box svg{width:15px;height:15px; flex-shrink:0;}
-  .search-box input{border:none; outline:none; flex:1; font-size:13px; background:transparent;}
+  .search-box input{border:none; outline:none; flex:1; font-size:calc(13px * var(--fs-scale)); background:transparent;}
   .select-box{
-    border:1px solid var(--border); border-radius:9px; padding:9px 13px; font-size:13px; color:var(--text-2); background:#fff;
+    border:1px solid var(--border); border-radius:9px; padding:9px 13px; font-size:calc(13px * var(--fs-scale)); color:var(--text-2); background:#fff;
   }
 
   /* dashboard two column */
   .dash-cols{grid-template-columns:1.3fr 1fr;}
   .list-row{display:flex; align-items:center; justify-content:space-between; padding:13px 0; border-bottom:1px solid var(--border);}
   .list-row:last-child{border-bottom:none;}
-  .list-row-title{font-size:13.5px; font-weight:600;}
-  .list-row-sub{font-size:12px; color:var(--text-3); margin-top:2px;}
+  .list-row-title{font-size:calc(13.5px * var(--fs-scale)); font-weight:600;}
+  .list-row-sub{font-size:calc(12px * var(--fs-scale)); color:var(--text-3); margin-top:2px;}
   .card-head{display:flex; align-items:center; justify-content:between; justify-content:space-between; margin-bottom:14px;}
-  .card-head h3{font-family:var(--font-display); font-size:15px; font-weight:600;}
-  .card-head a{font-size:12.5px; color:var(--amber-dark); font-weight:600; text-decoration:none;}
+  .card-head h3{font-family:var(--font-display); font-size:calc(15px * var(--fs-scale)); font-weight:600;}
+  .card-head a{font-size:calc(12.5px * var(--fs-scale)); color:var(--amber-dark); font-weight:600; text-decoration:none;}
 
   .feed-item{display:flex; align-items:center; gap:11px; padding:10px 0; border-bottom:1px solid var(--border);}
   .feed-item:last-child{border-bottom:none;}
   .feed-text{flex:1; min-width:0;}
-  .feed-name{font-size:13px; font-weight:600;}
-  .feed-meta{font-size:11.5px; color:var(--text-3);}
-  .feed-time{font-family:var(--font-mono); font-size:11.5px; color:var(--text-3); flex-shrink:0;}
+  .feed-name{font-size:calc(13px * var(--fs-scale)); font-weight:600;}
+  .feed-meta{font-size:calc(11.5px * var(--fs-scale)); color:var(--text-3);}
+  .feed-time{font-family:var(--font-mono); font-size:calc(11.5px * var(--fs-scale)); color:var(--text-3); flex-shrink:0;}
 
   /* meeting cards */
   .meetings-grid{grid-template-columns:repeat(3,1fr);}
   .meeting-card{display:flex; flex-direction:column; gap:12px;}
   .meeting-top{display:flex; align-items:flex-start; justify-content:space-between; gap:10px;}
-  .meeting-title{font-family:var(--font-display); font-size:15px; font-weight:600; line-height:1.4;}
-  .meeting-meta{display:flex; flex-direction:column; gap:6px; font-size:12.5px; color:var(--text-2);}
+  .meeting-title{font-family:var(--font-display); font-size:calc(15px * var(--fs-scale)); font-weight:600; line-height:1.4;}
+  .meeting-meta{display:flex; flex-direction:column; gap:6px; font-size:calc(12.5px * var(--fs-scale)); color:var(--text-2);}
   .meeting-meta div{display:flex; align-items:center; gap:7px;}
   .meeting-meta svg{width:14px;height:14px; color:var(--text-3); flex-shrink:0;}
   .progress-track{height:6px; background:var(--bg); border-radius:99px; overflow:hidden;}
   .progress-fill{height:100%; background:linear-gradient(90deg,var(--amber),#F2A94A); border-radius:99px;}
-  .meeting-foot{display:flex; align-items:center; justify-content:space-between; font-size:12px; color:var(--text-2);}
+  .meeting-foot{display:flex; align-items:center; justify-content:space-between; font-size:calc(12px * var(--fs-scale)); color:var(--text-2);}
   .meeting-actions{display:flex; gap:8px; margin-top:4px;}
 
   /* qrcode page */
@@ -236,8 +264,8 @@
   }
   .meeting-select-item:hover{background:var(--bg);}
   .meeting-select-item.active{background:var(--amber-light); border-color:#F1CB94;}
-  .meeting-select-item .t{font-size:13px; font-weight:600;}
-  .meeting-select-item .s{font-size:11.5px; color:var(--text-3); margin-top:2px;}
+  .meeting-select-item .t{font-size:calc(13px * var(--fs-scale)); font-weight:600;}
+  .meeting-select-item .s{font-size:calc(11.5px * var(--fs-scale)); color:var(--text-3); margin-top:2px;}
 
   .qr-panel{display:flex; flex-direction:column; align-items:center; text-align:center; padding:40px;}
   .qr-frame{
@@ -255,16 +283,16 @@
   .qr-ring-fg{fill:none; stroke:var(--amber); stroke-width:4; stroke-linecap:round; transition:stroke-dashoffset 1s linear;}
   .qr-ring-text{
     position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-    font-family:var(--font-mono); font-size:12px; font-weight:600; color:var(--navy);
+    font-family:var(--font-mono); font-size:calc(12px * var(--fs-scale)); font-weight:600; color:var(--navy);
   }
-  .qr-token{font-family:var(--font-mono); font-size:12px; color:var(--text-3); background:var(--bg); padding:8px 14px; border-radius:8px; margin-bottom:18px;}
+  .qr-token{font-family:var(--font-mono); font-size:calc(12px * var(--fs-scale)); color:var(--text-3); background:var(--bg); padding:8px 14px; border-radius:8px; margin-bottom:18px;}
   .qr-actions{display:flex; gap:10px; margin-bottom:26px;}
   .toggle-row{
     display:flex; align-items:center; justify-content:space-between; width:100%; max-width:420px; padding:13px 0;
     border-top:1px solid var(--border); text-align:left;
   }
-  .toggle-row .t{font-size:13px; font-weight:600;}
-  .toggle-row .s{font-size:11.5px; color:var(--text-3); margin-top:2px;}
+  .toggle-row .t{font-size:calc(13px * var(--fs-scale)); font-weight:600;}
+  .toggle-row .s{font-size:calc(11.5px * var(--fs-scale)); color:var(--text-3); margin-top:2px;}
   .switch{width:38px; height:22px; background:var(--border); border-radius:99px; position:relative; cursor:pointer; flex-shrink:0; transition:background .2s;}
   .switch::after{content:''; position:absolute; width:16px;height:16px; background:#fff; border-radius:50%; top:3px; left:3px; transition:left .2s; box-shadow:0 1px 3px rgba(0,0,0,0.2);}
   .switch.on{background:var(--amber);}
@@ -272,34 +300,34 @@
 
   /* checkin monitor */
   .monitor-strip{grid-template-columns:repeat(3,1fr); margin-bottom:20px;}
-  .monitor-num{font-family:var(--font-mono); font-size:26px; font-weight:600;}
+  .monitor-num{font-family:var(--font-mono); font-size:calc(26px * var(--fs-scale)); font-weight:600;}
 
   /* reports */
   .chart-card{min-height:280px;}
   .bar-chart{display:flex; align-items:flex-end; gap:18px; height:190px; padding-top:10px;}
   .bar-col{flex:1; display:flex; flex-direction:column; align-items:center; gap:8px; height:100%; justify-content:flex-end;}
   .bar-fill{width:100%; max-width:38px; border-radius:6px 6px 0 0; background:linear-gradient(180deg,#F2A94A,var(--amber));}
-  .bar-label{font-size:11px; color:var(--text-2); text-align:center;}
-  .bar-value{font-family:var(--font-mono); font-size:11.5px; color:var(--text-2); font-weight:600;}
+  .bar-label{font-size:calc(11px * var(--fs-scale)); color:var(--text-2); text-align:center;}
+  .bar-value{font-family:var(--font-mono); font-size:calc(11.5px * var(--fs-scale)); color:var(--text-2); font-weight:600;}
 
   .settings-section{margin-bottom:26px;}
-  .settings-section h3{font-family:var(--font-display); font-size:15px; font-weight:600; margin-bottom:4px;}
-  .settings-section p{font-size:12.5px; color:var(--text-2); margin-bottom:14px;}
-  .tree-item{display:flex; align-items:center; gap:8px; padding:9px 0; font-size:13px; border-bottom:1px solid var(--border);}
+  .settings-section h3{font-family:var(--font-display); font-size:calc(15px * var(--fs-scale)); font-weight:600; margin-bottom:4px;}
+  .settings-section p{font-size:calc(12.5px * var(--fs-scale)); color:var(--text-2); margin-bottom:14px;}
+  .tree-item{display:flex; align-items:center; gap:8px; padding:9px 0; font-size:calc(13px * var(--fs-scale)); border-bottom:1px solid var(--border);}
   .tree-item:last-child{border-bottom:none;}
-  .tree-item.sub{padding-left:26px; color:var(--text-2); font-size:12.5px;}
-  .log-item{display:flex; gap:14px; padding:9px 0; border-bottom:1px solid var(--border); font-size:12.5px;}
+  .tree-item.sub{padding-left:26px; color:var(--text-2); font-size:calc(12.5px * var(--fs-scale));}
+  .log-item{display:flex; gap:14px; padding:9px 0; border-bottom:1px solid var(--border); font-size:calc(12.5px * var(--fs-scale));}
   .log-item:last-child{border-bottom:none;}
   .log-item .lt{font-family:var(--font-mono); color:var(--text-3); flex-shrink:0; width:130px;}
 
   /* ===================== FRONTEND SHELL ===================== */
-  #frontend-shell{display:none; min-height:calc(100vh - 57px); padding:60px 20px; flex-direction:column; align-items:center; background:
+  #frontend-shell{display:none; min-height:calc(100vh - var(--modebar-h, 57px)); padding:60px 20px; flex-direction:column; align-items:center; background:
     radial-gradient(circle at 50% 0%, #1c2b4d 0%, var(--bg) 62%);}
-  .fe-caption{text-align:center; color:var(--text-2); font-size:13px; margin-bottom:30px; max-width:420px;}
+  .fe-caption{text-align:center; color:var(--text-2); font-size:calc(13px * var(--fs-scale)); margin-bottom:30px; max-width:420px;}
   .fe-caption b{color:var(--text); font-family:var(--font-display);}
 
   .phone{
-    width:340px; height:700px; background:#0B0F1C; border-radius:44px; padding:14px; box-shadow:0 30px 60px -20px rgba(10,16,40,0.5);
+    width:min(340px, 86vw); aspect-ratio:340 / 700; background:#0B0F1C; border-radius:44px; padding:14px; box-shadow:0 30px 60px -20px rgba(10,16,40,0.5);
     position:relative;
   }
   .phone-screen-wrap{width:100%; height:100%; background:#fff; border-radius:32px; overflow:hidden; position:relative;}
@@ -309,7 +337,7 @@
   }
   .status-bar{
     display:flex; align-items:center; justify-content:space-between; padding:16px 26px 6px; font-family:var(--font-mono);
-    font-size:12px; font-weight:600;
+    font-size:calc(12px * var(--fs-scale)); font-weight:600;
   }
   .fe-screen{display:none; height:100%; flex-direction:column;}
   .fe-screen.active{display:flex;}
@@ -317,8 +345,8 @@
   /* scan screen */
   #screen-scan{background:linear-gradient(180deg,#0E1730,#1B2748 60%,#0E1730); color:#fff;}
   .scan-header{padding:14px 22px 10px; text-align:center;}
-  .scan-header .a{font-family:var(--font-display); font-weight:700; font-size:15px;}
-  .scan-header .b{font-size:11px; color:rgba(255,255,255,0.5); margin-top:2px;}
+  .scan-header .a{font-family:var(--font-display); font-weight:700; font-size:calc(15px * var(--fs-scale));}
+  .scan-header .b{font-size:calc(11px * var(--fs-scale)); color:rgba(255,255,255,0.5); margin-top:2px;}
   .scan-area{flex:1; display:flex; align-items:center; justify-content:center; position:relative;}
   .scan-frame{width:200px; height:200px; position:relative;}
   .scan-corner{position:absolute; width:26px; height:26px; border:3px solid var(--amber);}
@@ -328,15 +356,15 @@
   .scan-corner.br{bottom:0; right:0; border-left:none; border-top:none; border-radius:0 0 6px 0;}
   .scan-line{position:absolute; left:6px; right:6px; height:2px; background:linear-gradient(90deg,transparent,var(--amber),transparent); top:10px; animation:scanmove 2.2s ease-in-out infinite;}
   @keyframes scanmove{0%{top:6px;}50%{top:190px;}100%{top:6px;}}
-  .scan-hint{text-align:center; font-size:12px; color:rgba(255,255,255,0.55); padding:0 30px 8px;}
+  .scan-hint{text-align:center; font-size:calc(12px * var(--fs-scale)); color:rgba(255,255,255,0.55); padding:0 30px 8px;}
   .scan-bottom{padding:16px 22px 28px;}
   .scan-meeting-card{
     background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:14px; padding:14px 16px; margin-bottom:14px;
   }
-  .scan-meeting-card .t{font-size:13px; font-weight:600;}
-  .scan-meeting-card .s{font-size:11px; color:rgba(255,255,255,0.5); margin-top:3px;}
+  .scan-meeting-card .t{font-size:calc(13px * var(--fs-scale)); font-weight:600;}
+  .scan-meeting-card .s{font-size:calc(11px * var(--fs-scale)); color:rgba(255,255,255,0.5); margin-top:3px;}
   .scan-btn{
-    width:100%; background:var(--amber); color:#fff; border:none; border-radius:14px; padding:15px; font-size:14px; font-weight:700;
+    width:100%; background:var(--amber); color:#fff; border:none; border-radius:14px; padding:15px; font-size:calc(14px * var(--fs-scale)); font-weight:700;
     display:flex; align-items:center; justify-content:center; gap:8px;
   }
   .spinner{width:15px;height:15px; border:2px solid rgba(255,255,255,0.4); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; display:none;}
@@ -345,30 +373,30 @@
   /* confirm screen */
   #screen-confirm{background:#fff;}
   .confirm-top{background:var(--navy); color:#fff; padding:34px 24px 46px; text-align:center; position:relative;}
-  .confirm-top .a{font-size:12px; color:rgba(255,255,255,0.55); margin-bottom:6px;}
+  .confirm-top .a{font-size:calc(12px * var(--fs-scale)); color:rgba(255,255,255,0.55); margin-bottom:6px;}
   .confirm-avatar{
     width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg,var(--amber),#F2A94A); color:#fff;
-    display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:700; font-size:22px;
+    display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:700; font-size:calc(22px * var(--fs-scale));
     margin:0 auto 12px; border:3px solid rgba(255,255,255,0.15);
   }
-  .confirm-top .name{font-family:var(--font-display); font-weight:700; font-size:17px;}
-  .confirm-top .role{font-size:12px; color:rgba(255,255,255,0.6); margin-top:2px;}
+  .confirm-top .name{font-family:var(--font-display); font-weight:700; font-size:calc(17px * var(--fs-scale));}
+  .confirm-top .role{font-size:calc(12px * var(--fs-scale)); color:rgba(255,255,255,0.6); margin-top:2px;}
   .confirm-card{
     background:#fff; margin:-28px 18px 0; border-radius:16px; box-shadow:0 10px 26px -14px rgba(22,33,62,0.25); padding:18px; position:relative; z-index:2;
   }
-  .confirm-field{display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border); font-size:12.5px;}
+  .confirm-field{display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border); font-size:calc(12.5px * var(--fs-scale));}
   .confirm-field:last-child{border-bottom:none;}
   .confirm-field .k{color:var(--text-3);}
   .confirm-field .v{font-weight:600;}
   .confirm-meeting{margin:16px 18px 0; background:var(--amber-light); border-radius:14px; padding:14px 16px;}
-  .confirm-meeting .t{font-size:12.5px; font-weight:700; color:var(--amber-dark);}
-  .confirm-meeting .s{font-size:11.5px; color:#8a5c15; margin-top:4px;}
+  .confirm-meeting .t{font-size:calc(12.5px * var(--fs-scale)); font-weight:700; color:var(--amber-dark);}
+  .confirm-meeting .s{font-size:calc(11.5px * var(--fs-scale)); color:#8a5c15; margin-top:4px;}
   .confirm-spacer{flex:1;}
   .confirm-bottom{padding:16px 22px 26px;}
   .confirm-btn{
-    width:100%; background:var(--navy); color:#fff; border:none; border-radius:14px; padding:15px; font-size:14px; font-weight:700;
+    width:100%; background:var(--navy); color:#fff; border:none; border-radius:14px; padding:15px; font-size:calc(14px * var(--fs-scale)); font-weight:700;
   }
-  .confirm-note{text-align:center; font-size:11px; color:var(--text-3); margin-top:10px;}
+  .confirm-note{text-align:center; font-size:calc(11px * var(--fs-scale)); color:var(--text-3); margin-top:10px;}
 
   /* success screen */
   #screen-success{background:#fff; align-items:center; justify-content:center; text-align:center; padding:30px;}
@@ -380,35 +408,178 @@
   .stamp.show{animation:stampin .5s cubic-bezier(.34,1.56,.64,1) forwards;}
   @keyframes stampin{to{transform:rotate(-10deg) scale(1); opacity:1;}}
   .stamp svg{width:38px;height:38px; margin-bottom:4px;}
-  .stamp .st{font-size:12.5px; font-weight:700; letter-spacing:1px;}
-  .success-title{font-family:var(--font-display); font-size:19px; font-weight:700; margin-bottom:6px;}
-  .success-sub{font-size:12.5px; color:var(--text-2); margin-bottom:22px;}
+  .stamp .st{font-size:calc(12.5px * var(--fs-scale)); font-weight:700; letter-spacing:1px;}
+  .success-title{font-family:var(--font-display); font-size:calc(19px * var(--fs-scale)); font-weight:700; margin-bottom:6px;}
+  .success-sub{font-size:calc(12.5px * var(--fs-scale)); color:var(--text-2); margin-bottom:22px;}
   .success-card{width:100%; background:var(--bg); border-radius:14px; padding:16px 18px; text-align:left; margin-bottom:22px;}
-  .success-card .row{display:flex; justify-content:space-between; padding:6px 0; font-size:12.5px;}
+  .success-card .row{display:flex; justify-content:space-between; padding:6px 0; font-size:calc(12.5px * var(--fs-scale));}
   .success-card .row .k{color:var(--text-3);}
   .success-card .row .v{font-weight:600; font-family:var(--font-mono);}
-  .success-back{font-size:12.5px; color:var(--amber-dark); font-weight:600; background:none; border:none; text-decoration:underline;}
+  .success-back{font-size:calc(12.5px * var(--fs-scale)); color:var(--amber-dark); font-weight:600; background:none; border:none; text-decoration:underline;}
+
+  /* ===================== MODAL / TOAST / PROJECTION / FORMS ===================== */
+  .modal-overlay{position:fixed; inset:0; background:rgba(15,20,35,0.55); z-index:200; display:none; align-items:center; justify-content:center; padding:24px;}
+  .modal-overlay.show{display:flex;}
+  .modal{background:#fff; border-radius:16px; width:100%; max-width:560px; max-height:88vh; display:flex; flex-direction:column; box-shadow:0 30px 70px -20px rgba(10,16,40,.45); animation:modalIn .18s ease;}
+  .modal.modal-lg{max-width:740px;}
+  .modal.modal-sm{max-width:420px;}
+  @keyframes modalIn{from{opacity:0; transform:translateY(10px) scale(.98);} to{opacity:1; transform:none;}}
+  .modal-header{display:flex; align-items:flex-start; justify-content:space-between; padding:20px 24px; border-bottom:1px solid var(--border); flex-shrink:0;}
+  .modal-header h2{font-family:var(--font-display); font-size:calc(17px * var(--fs-scale)); font-weight:700;}
+  .modal-header p{font-size:calc(12px * var(--fs-scale)); color:var(--text-2); margin-top:3px;}
+  .modal-close{width:30px; height:30px; border-radius:8px; border:none; background:var(--bg); display:flex; align-items:center; justify-content:center; color:var(--text-2); flex-shrink:0;}
+  .modal-close:hover{background:var(--border);}
+  .modal-close svg{width:15px;height:15px;}
+  .modal-body{padding:22px 24px; overflow-y:auto; flex:1;}
+  .modal-footer{display:flex; justify-content:flex-end; gap:10px; padding:16px 24px; border-top:1px solid var(--border); flex-shrink:0;}
+
+  .form-row{margin-bottom:16px;}
+  .form-row label{display:block; font-size:calc(12.5px * var(--fs-scale)); font-weight:600; margin-bottom:6px; color:var(--text);}
+  .form-row .hint{font-size:calc(11px * var(--fs-scale)); color:var(--text-3); margin-top:5px;}
+  .form-input, .form-select, .form-textarea{width:100%; border:1px solid var(--border); border-radius:9px; padding:10px 12px; font-size:calc(13px * var(--fs-scale)); font-family:inherit; color:var(--text); background:#fff;}
+  .form-textarea{resize:vertical; min-height:70px;}
+  .form-input:focus, .form-select:focus, .form-textarea:focus{outline:none; border-color:var(--amber); box-shadow:0 0 0 3px var(--amber-light);}
+  .form-grid-2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .form-section-title{font-size:calc(11px * var(--fs-scale)); text-transform:uppercase; letter-spacing:.6px; color:var(--text-3); font-weight:700; margin:20px 0 14px; padding-top:18px; border-top:1px solid var(--border);}
+  .form-section-title:first-child{margin-top:0; padding-top:0; border-top:none;}
+  .radio-card-group{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .radio-card{border:1.5px solid var(--border); border-radius:10px; padding:12px 14px; cursor:pointer; font-size:calc(12.5px * var(--fs-scale)); transition:all .12s;}
+  .radio-card.active{border-color:var(--amber); background:var(--amber-light);}
+  .radio-card .t{font-weight:700; margin-bottom:2px;}
+  .radio-card .s{color:var(--text-2); font-size:calc(11px * var(--fs-scale));}
+  .checkbox-row{display:flex; align-items:center; gap:9px; font-size:calc(13px * var(--fs-scale)); padding:8px 2px; cursor:pointer;}
+  .checkbox-row input{width:15px; height:15px; accent-color:var(--amber);}
+  .attendee-pick-list{max-height:170px; overflow-y:auto; border:1px solid var(--border); border-radius:9px; padding:4px 10px;}
+  .attendee-pick-item{display:flex; align-items:center; gap:10px; padding:9px 4px; border-bottom:1px solid var(--border); font-size:calc(12.5px * var(--fs-scale));}
+  .attendee-pick-item:last-child{border-bottom:none;}
+  .attendee-pick-item input{width:14px; height:14px; accent-color:var(--amber);}
+
+  .dropzone{border:2px dashed var(--border); border-radius:14px; padding:36px 20px; text-align:center; cursor:pointer; transition:all .15s;}
+  .dropzone:hover{border-color:var(--amber); background:var(--amber-light);}
+  .dropzone svg{width:34px; height:34px; color:var(--text-3); margin-bottom:10px;}
+  .dropzone .t{font-size:calc(13px * var(--fs-scale)); font-weight:700; margin-bottom:3px;}
+  .dropzone .s{font-size:calc(11.5px * var(--fs-scale)); color:var(--text-3);}
+  .step-indicator{display:flex; align-items:center; gap:8px; margin-bottom:22px;}
+  .step-dot{display:flex; align-items:center; gap:8px; font-size:calc(11.5px * var(--fs-scale)); color:var(--text-3); font-weight:600; flex-shrink:0;}
+  .step-dot .n{width:22px; height:22px; border-radius:50%; background:var(--bg); display:flex; align-items:center; justify-content:center; font-size:calc(11px * var(--fs-scale)); flex-shrink:0;}
+  .step-dot.active{color:var(--amber-dark);}
+  .step-dot.active .n{background:var(--amber); color:#fff;}
+  .step-dot.done .n{background:var(--success); color:#fff;}
+  .step-line{flex:1; height:1px; background:var(--border);}
+  .info-banner{display:flex; gap:10px; background:var(--warn-light); border:1px solid #F0DBA5; border-radius:10px; padding:12px 14px; font-size:calc(12px * var(--fs-scale)); color:#8a6a10; margin-bottom:16px;}
+  .info-banner svg{width:16px;height:16px; flex-shrink:0; margin-top:1px;}
+  .info-banner.ok{background:var(--success-light); border-color:#BEE6CC; color:#1f6b41;}
+
+  .progress-full{height:8px; background:var(--bg); border-radius:99px; overflow:hidden; margin:16px 0 6px;}
+  .progress-full-fill{height:100%; background:linear-gradient(90deg,var(--amber),#F2A94A); width:0%; transition:width .25s linear; border-radius:99px;}
+  .progress-full-label{font-size:calc(11.5px * var(--fs-scale)); color:var(--text-3); font-family:var(--font-mono);}
+
+  .toast-wrap{position:fixed; top:76px; right:24px; z-index:400; display:flex; flex-direction:column; gap:10px;}
+  .toast{background:#1d3b2b; color:#fff; padding:13px 18px; border-radius:10px; font-size:calc(13px * var(--fs-scale)); display:flex; align-items:center; gap:10px; box-shadow:0 14px 30px -12px rgba(0,0,0,.4); min-width:250px; animation:toastIn .2s ease;}
+  .toast svg{width:16px; height:16px; flex-shrink:0; color:var(--success);}
+  @keyframes toastIn{from{opacity:0; transform:translateX(20px);} to{opacity:1; transform:none;}}
+  .toast.hide{animation:toastOut .2s ease forwards;}
+  @keyframes toastOut{to{opacity:0; transform:translateX(20px);}}
+
+  .projection-overlay{position:fixed; inset:0; background:radial-gradient(circle at 50% 28%, #1c2b4d, #0B0F1C 72%); z-index:300; display:none; flex-direction:column; align-items:center; justify-content:center; color:#fff;}
+  .projection-overlay.show{display:flex;}
+  .projection-close{position:absolute; top:26px; right:30px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18); color:#fff; padding:9px 16px; border-radius:99px; font-size:calc(12.5px * var(--fs-scale)); font-weight:600;}
+  .projection-close:hover{background:rgba(255,255,255,.16);}
+  .projection-qr{width:min(340px, 78vw); height:min(340px, 78vw); background:#fff; border-radius:24px; padding:20px; box-shadow:0 30px 80px -20px rgba(0,0,0,.6); margin-bottom:30px;}
+  .projection-qr .qr-grid{width:100%; height:100%;}
+  .projection-title{font-family:var(--font-display); font-size:calc(26px * var(--fs-scale)); font-weight:700;}
+  .projection-sub{font-size:calc(14px * var(--fs-scale)); color:rgba(255,255,255,.55); margin-top:8px; margin-bottom:20px;}
+  .projection-countdown{font-family:var(--font-mono); font-size:calc(15px * var(--fs-scale)); color:var(--amber); background:rgba(226,134,27,.13); padding:9px 22px; border-radius:99px; border:1px solid rgba(226,134,27,.35);}
+
+  .pagination{display:flex; align-items:center; justify-content:space-between; margin-top:14px; font-size:calc(12.5px * var(--fs-scale)); color:var(--text-2);}
+  .pagination .pages{display:flex; gap:6px;}
+  .pagination button{width:28px; height:28px; border-radius:7px; border:1px solid var(--border); background:#fff; color:var(--text-2); font-size:calc(12px * var(--fs-scale));}
+  .pagination button.active{background:var(--navy); color:#fff; border-color:var(--navy);}
+  .pagination button:disabled{opacity:.4; cursor:not-allowed;}
+
+  .badge-blue{background:#EAEEFB; color:#33448B;}
+  .badge-blue .badge-dot{background:#33448B;}
+  .log-item2{display:flex; gap:12px; align-items:flex-start; padding:11px 0; border-bottom:1px solid var(--border); font-size:calc(12.5px * var(--fs-scale));}
+  .log-item2:last-child{border-bottom:none;}
+  .log-item2 .lt{font-family:var(--font-mono); color:var(--text-3); flex-shrink:0; width:128px; padding-top:2px;}
+  .log-item2 .lb{flex-shrink:0;}
+  .new-row{animation:rowFlash 1.4s ease;}
+  @keyframes rowFlash{0%{background:var(--amber-light);} 100%{background:transparent;}}
+
+  @media (max-width:1080px){
+    .stats-grid{grid-template-columns:repeat(2,1fr) !important;}
+    .meetings-grid{grid-template-columns:repeat(2,1fr) !important;}
+    .monitor-strip{grid-template-columns:repeat(3,1fr) !important;}
+  }
 
   @media (max-width:900px){
+    .hamburger{display:flex;}
     #admin-shell{grid-template-columns:1fr;}
-    .sidebar{display:none;}
+    .sidebar{
+      position:fixed; left:0; top:0; width:250px; height:100vh;
+      transform:translateX(-100%); box-shadow:0 0 40px rgba(0,0,0,.3);
+    }
+    .sidebar.open{transform:translateX(0);}
+    .topbar{padding:0 16px;}
+    .page{padding:20px 16px 50px;}
     .stats-grid, .meetings-grid, .qr-layout, .dash-cols, .monitor-strip{grid-template-columns:1fr !important;}
+    .mode-bar{justify-content:space-between; padding:10px 16px;}
+    .mode-bar .brand{font-size:calc(13.5px * var(--fs-scale));}
+    .segmented button{padding:8px 13px;}
+  }
+
+  @media (max-width:640px){
+    .page-header{flex-direction:column; align-items:flex-start;}
+    .page-header > div:last-child, .page-header button{width:100%;}
+    .toolbar{flex-direction:column; align-items:stretch;}
+    .search-box, .select-box{max-width:none; width:100%;}
+    .form-grid-2, .radio-card-group{grid-template-columns:1fr;}
+    .modal{max-width:100%; max-height:94vh; border-radius:14px;}
+    .modal-body, .modal-header, .modal-footer{padding-left:16px; padding-right:16px;}
+    .modal-footer{flex-wrap:wrap;}
+    .modal-footer button{flex:1;}
+    .meeting-actions{flex-direction:column;}
+    .qr-actions{flex-direction:column; width:100%;}
+    .qr-actions button{width:100%;}
+    .bar-chart{gap:8px;}
+    .fs-toggle .lbl{display:none;}
+    .toast-wrap{left:16px; right:16px; top:auto; bottom:16px;}
+    .toast{min-width:0; width:100%;}
+    .projection-close{top:14px; right:14px; padding:7px 12px; font-size:calc(11px * var(--fs-scale));}
+  }
+
+  @media (max-width:420px){
+    .mode-bar .brand span:last-child{display:none;}
+    .segmented button{padding:7px 10px; font-size:calc(12px * var(--fs-scale));}
+    .stat-value{font-size:calc(23px * var(--fs-scale));}
   }
 </style>
 </head>
 <body>
+<div class="sidebar-backdrop" id="sidebar-backdrop" onclick="closeSidebar()"></div>
 
 <div class="mode-bar">
-  <div class="brand"><span class="dot"></span>會議線上簽到系統</div>
+  <button class="hamburger" id="hamburger-btn" onclick="toggleSidebar()" aria-label="開啟選單">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+  </button>
+  <div class="brand"><span class="dot"></span><span>會議線上簽到系統</span></div>
   <div class="segmented">
     <button id="btn-admin" class="active" onclick="setMode('admin')">後台管理系統</button>
     <button id="btn-fe" onclick="setMode('fe')">前台簽到端（行動版）</button>
+  </div>
+  <div class="fs-toggle">
+    <span class="lbl">文字大小</span>
+    <div class="fs-group">
+      <button id="fs-small" onclick="setFontSize('small')" aria-label="小字">A</button>
+      <button id="fs-medium" class="active" onclick="setFontSize('medium')" aria-label="中字">A</button>
+      <button id="fs-large" onclick="setFontSize('large')" aria-label="大字">A</button>
+    </div>
   </div>
 </div>
 
 <!-- ===================== ADMIN ===================== -->
 <div id="admin-shell">
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar">
     <div class="logo">
       <div class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#16213E" stroke-width="2.4"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM15 15l2 2 3-4"/></svg></div>
       <div class="logo-text">簽到雲<span>MEETING CHECK-IN</span></div>
@@ -460,7 +631,7 @@
     <section class="page active" id="page-dashboard">
       <div class="page-header">
         <div><div class="page-title">早安，王承辦 👋</div><div class="page-sub">今天是 2026 年 7 月 16 日（四）・共有 3 場會議排程</div></div>
-        <button class="btn btn-primary" onclick="showPage('meetings', document.querySelectorAll('.nav-item')[2])"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>建立新會議</button>
+        <button class="btn btn-primary" onclick="openCreateMeetingModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>建立新會議</button>
       </div>
 
       <div class="grid stats-grid">
@@ -477,13 +648,13 @@
         </div>
         <div class="card stat-card">
           <div class="stat-icon" style="background:#EAEEFB"><svg viewBox="0 0 24 24" fill="none" stroke="#33448B" stroke-width="2"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17.5" cy="8.5" r="2.5"/></svg></div>
-          <div class="stat-value">42<span style="font-size:15px;color:var(--text-3)">/50</span></div>
+          <div class="stat-value">42<span style="font-size:calc(15px * var(--fs-scale));color:var(--text-3)">/50</span></div>
           <div class="stat-label">目前已簽到人數</div>
           <div class="stat-delta delta-up">▲ 84%</div>
         </div>
         <div class="card stat-card">
           <div class="stat-icon" style="background:var(--warn-light)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--warn)" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
-          <div class="stat-value">91<span style="font-size:15px;color:var(--text-3)">%</span></div>
+          <div class="stat-value">91<span style="font-size:calc(15px * var(--fs-scale));color:var(--text-3)">%</span></div>
           <div class="stat-label">近期平均準時率</div>
           <div class="stat-delta delta-up">▲ 3.2%</div>
         </div>
@@ -513,10 +684,10 @@
         <div class="card">
           <div class="card-head"><h3>即時簽到動態</h3><span class="badge badge-green"><span class="badge-dot"></span>Live</span></div>
           <div id="live-feed">
-            <div class="feed-item"><div class="cell-avatar" style="width:30px;height:30px;font-size:11px">吳</div><div class="feed-text"><div class="feed-name">吳承翰</div><div class="feed-meta">資訊部・準時簽到</div></div><div class="feed-time">09:29:18</div></div>
-            <div class="feed-item"><div class="cell-avatar" style="width:30px;height:30px;font-size:11px">李</div><div class="feed-text"><div class="feed-name">李佳蓉</div><div class="feed-meta">人資部・準時簽到</div></div><div class="feed-time">09:26:51</div></div>
-            <div class="feed-item"><div class="cell-avatar" style="width:30px;height:30px;font-size:11px">陳</div><div class="feed-text"><div class="feed-name">陳建宏</div><div class="feed-meta">研發部・遲到簽到</div></div><div class="feed-time">09:31:45</div></div>
-            <div class="feed-item"><div class="cell-avatar" style="width:30px;height:30px;font-size:11px">王</div><div class="feed-text"><div class="feed-name">王思穎</div><div class="feed-meta">財務部・準時簽到</div></div><div class="feed-time">09:20:03</div></div>
+            <div class="feed-item"><div class="cell-avatar" style="width:30px;height:30px;font-size:calc(11px * var(--fs-scale))">吳</div><div class="feed-text"><div class="feed-name">吳承翰</div><div class="feed-meta">資訊部・準時簽到</div></div><div class="feed-time">09:29:18</div></div>
+            <div class="feed-item"><div class="cell-avatar" style="width:30px;height:30px;font-size:calc(11px * var(--fs-scale))">李</div><div class="feed-text"><div class="feed-name">李佳蓉</div><div class="feed-meta">人資部・準時簽到</div></div><div class="feed-time">09:26:51</div></div>
+            <div class="feed-item"><div class="cell-avatar" style="width:30px;height:30px;font-size:calc(11px * var(--fs-scale))">陳</div><div class="feed-text"><div class="feed-name">陳建宏</div><div class="feed-meta">研發部・遲到簽到</div></div><div class="feed-time">09:31:45</div></div>
+            <div class="feed-item"><div class="cell-avatar" style="width:30px;height:30px;font-size:calc(11px * var(--fs-scale))">王</div><div class="feed-text"><div class="feed-name">王思穎</div><div class="feed-meta">財務部・準時簽到</div></div><div class="feed-time">09:20:03</div></div>
           </div>
         </div>
       </div>
@@ -527,8 +698,8 @@
       <div class="page-header">
         <div><div class="page-title">帳號管理</div><div class="page-sub">維護系統操作帳號與簽到者基本資料</div></div>
         <div style="display:flex; gap:10px;">
-          <button class="btn btn-outline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M6 11l6 6 6-6M4 21h16"/></svg>匯入 Excel</button>
-          <button class="btn btn-primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>新增帳號</button>
+          <button class="btn btn-outline" onclick="openImportExcelModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M6 11l6 6 6-6M4 21h16"/></svg>匯入 Excel</button>
+          <button class="btn btn-primary" onclick="openAddAccountModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>新增帳號</button>
         </div>
       </div>
       <div class="toolbar">
@@ -537,9 +708,10 @@
         <select class="select-box"><option>全部狀態</option><option>啟用</option><option>停用</option></select>
       </div>
       <div class="card" style="padding:0; overflow:hidden;">
+        <div class="table-wrap">
         <table>
           <thead><tr><th>姓名</th><th>員工編號</th><th>部門／職稱</th><th>Email</th><th>角色</th><th>狀態</th><th></th></tr></thead>
-          <tbody>
+          <tbody id="accounts-tbody">
             <tr><td><div class="cell-name"><div class="cell-avatar">林</div><div>林怡君</div></div></td><td class="mono">E10231</td><td>行銷部・經理</td><td class="mono">yijun.lin@company.com</td><td>一般使用者</td><td><span class="badge badge-green"><span class="badge-dot"></span>啟用</span></td><td><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button></td></tr>
             <tr><td><div class="cell-name"><div class="cell-avatar">陳</div><div>陳建宏</div></div></td><td class="mono">E10456</td><td>研發部・工程師</td><td class="mono">jh.chen@company.com</td><td>一般使用者</td><td><span class="badge badge-green"><span class="badge-dot"></span>啟用</span></td><td><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button></td></tr>
             <tr><td><div class="cell-name"><div class="cell-avatar">王</div><div>王思穎</div></div></td><td class="mono">E10078</td><td>財務部・副理</td><td class="mono">syw@company.com</td><td>會議管理者</td><td><span class="badge badge-green"><span class="badge-dot"></span>啟用</span></td><td><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button></td></tr>
@@ -548,6 +720,7 @@
             <tr><td><div class="cell-name"><div class="cell-avatar">吳</div><div>吳承翰</div></div></td><td class="mono">E10344</td><td>資訊部・工程師</td><td class="mono">chenghan@company.com</td><td>一般使用者</td><td><span class="badge badge-green"><span class="badge-dot"></span>啟用</span></td><td><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button></td></tr>
           </tbody>
         </table>
+        </div>
       </div>
     </section>
 
@@ -555,7 +728,7 @@
     <section class="page" id="page-meetings">
       <div class="page-header">
         <div><div class="page-title">會議管理</div><div class="page-sub">建立與管理會議、簽到規則與名單</div></div>
-        <button class="btn btn-primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>建立會議</button>
+        <button class="btn btn-primary" onclick="openCreateMeetingModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>建立會議</button>
       </div>
       <div class="grid meetings-grid">
         <div class="card meeting-card">
@@ -575,7 +748,7 @@
             <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.3 7-12a7 7 0 10-14 0c0 5.7 7 12 7 12z"/><circle cx="12" cy="9" r="2.4"/></svg>國際會議廳</div>
           </div>
           <div><div class="progress-track"><div class="progress-fill" style="width:0%"></div></div><div class="meeting-foot" style="margin-top:6px;"><span>尚未開放簽到</span><span>—</span></div></div>
-          <div class="meeting-actions"><button class="btn btn-outline btn-sm" style="flex:1">編輯</button><button class="btn btn-navy btn-sm" style="flex:1">發布會議</button></div>
+          <div class="meeting-actions"><button class="btn btn-outline btn-sm" style="flex:1" onclick="openEditMeetingModal('新產品發表會', this)">編輯</button><button class="btn btn-navy btn-sm" style="flex:1" onclick="confirmPublishMeeting('新產品發表會', this)">發布會議</button></div>
         </div>
 
         <div class="card meeting-card">
@@ -585,7 +758,7 @@
             <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.3 7-12a7 7 0 10-14 0c0 5.7 7 12 7 12z"/><circle cx="12" cy="9" r="2.4"/></svg>線上會議室</div>
           </div>
           <div><div class="progress-track"><div class="progress-fill" style="width:0%"></div></div><div class="meeting-foot" style="margin-top:6px;"><span>預計 65 人</span><span>—</span></div></div>
-          <div class="meeting-actions"><button class="btn btn-outline btn-sm" style="flex:1">編輯</button><button class="btn btn-navy btn-sm" style="flex:1">產生 QRCode</button></div>
+          <div class="meeting-actions"><button class="btn btn-outline btn-sm" style="flex:1" onclick="openEditMeetingModal('資安教育訓練', this)">編輯</button><button class="btn btn-navy btn-sm" style="flex:1" onclick="goToQRCodeFor('資安教育訓練')">產生 QRCode</button></div>
         </div>
 
         <div class="card meeting-card">
@@ -595,7 +768,7 @@
             <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.3 7-12a7 7 0 10-14 0c0 5.7 7 12 7 12z"/><circle cx="12" cy="9" r="2.4"/></svg>董事會議室</div>
           </div>
           <div><div class="progress-track"><div class="progress-fill" style="width:0%"></div></div><div class="meeting-foot" style="margin-top:6px;"><span>預計 12 人</span><span>—</span></div></div>
-          <div class="meeting-actions"><button class="btn btn-outline btn-sm" style="flex:1">編輯</button><button class="btn btn-navy btn-sm" style="flex:1">產生 QRCode</button></div>
+          <div class="meeting-actions"><button class="btn btn-outline btn-sm" style="flex:1" onclick="openEditMeetingModal('董事會議', this)">編輯</button><button class="btn btn-navy btn-sm" style="flex:1" onclick="goToQRCodeFor('董事會議')">產生 QRCode</button></div>
         </div>
 
         <div class="card meeting-card">
@@ -605,7 +778,7 @@
             <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.3 7-12a7 7 0 10-14 0c0 5.7 7 12 7 12z"/><circle cx="12" cy="9" r="2.4"/></svg>陽明山會館</div>
           </div>
           <div><div class="progress-track"><div class="progress-fill" style="width:0%"></div></div><div class="meeting-foot" style="margin-top:6px;"><span>預計 80 人</span><span>—</span></div></div>
-          <div class="meeting-actions"><button class="btn btn-outline btn-sm" style="flex:1">編輯</button><button class="btn btn-navy btn-sm" style="flex:1">產生 QRCode</button></div>
+          <div class="meeting-actions"><button class="btn btn-outline btn-sm" style="flex:1" onclick="openEditMeetingModal('年度策略共識營', this)">編輯</button><button class="btn btn-navy btn-sm" style="flex:1" onclick="goToQRCodeFor('年度策略共識營')">產生 QRCode</button></div>
         </div>
       </div>
     </section>
@@ -617,7 +790,7 @@
       </div>
       <div class="grid qr-layout">
         <div class="card">
-          <div class="card-head"><h3 style="font-size:13px;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;">選擇會議</h3></div>
+          <div class="card-head"><h3 style="font-size:calc(13px * var(--fs-scale));color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;">選擇會議</h3></div>
           <div class="meeting-select-item active"><div class="t">部門主管會議</div><div class="s">07/16 09:30・簽到中</div></div>
           <div class="meeting-select-item"><div class="t">資安教育訓練</div><div class="s">07/22 10:00・已發布</div></div>
           <div class="meeting-select-item"><div class="t">董事會議</div><div class="s">07/25 15:00・已發布</div></div>
@@ -635,13 +808,13 @@
               <div class="qr-ring-text" id="qr-countdown">60</div>
             </div>
           </div>
-          <div style="font-family:var(--font-display); font-weight:700; font-size:15px; margin-bottom:2px;">部門主管會議・現場簽到碼</div>
-          <div style="font-size:12px;color:var(--text-3); margin-bottom:14px;">每 60 秒自動刷新一次，防止截圖轉發代簽</div>
+          <div style="font-family:var(--font-display); font-weight:700; font-size:calc(15px * var(--fs-scale)); margin-bottom:2px;">部門主管會議・現場簽到碼</div>
+          <div style="font-size:calc(12px * var(--fs-scale));color:var(--text-3); margin-bottom:14px;">每 60 秒自動刷新一次，防止截圖轉發代簽</div>
           <div class="qr-token" id="qr-token">token: 8f3a1c9e2b7d4f6a...</div>
           <div class="qr-actions">
             <button class="btn btn-outline btn-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M6 11l6 6 6-6M4 21h16"/></svg>下載 PNG</button>
             <button class="btn btn-outline btn-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M6 11l6 6 6-6M4 21h16"/></svg>下載 PDF</button>
-            <button class="btn btn-navy btn-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>投影模式</button>
+            <button class="btn btn-navy btn-sm" onclick="openProjection()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>投影模式</button>
           </div>
 
           <div class="toggle-row"><div><div class="t">動態刷新 QRCode</div><div class="s">每 60 秒更新一次加密內容</div></div><div class="switch on" onclick="this.classList.toggle('on')"></div></div>
@@ -655,30 +828,32 @@
     <section class="page" id="page-monitor">
       <div class="page-header">
         <div><div class="page-title">簽到監控</div><div class="page-sub">部門主管會議・07/16（四）09:30－11:30・3F 大會議室</div></div>
-        <span class="badge badge-amber" style="font-size:13px;padding:8px 14px;"><span class="badge-dot"></span>簽到進行中</span>
+        <span class="badge badge-amber" style="font-size:calc(13px * var(--fs-scale));padding:8px 14px;"><span class="badge-dot"></span>簽到進行中</span>
       </div>
       <div class="grid monitor-strip">
-        <div class="card" style="text-align:center;"><div class="monitor-num" style="color:var(--success)">42</div><div class="stat-label">已簽到</div></div>
-        <div class="card" style="text-align:center;"><div class="monitor-num" style="color:var(--danger)">3</div><div class="stat-label">遲到</div></div>
-        <div class="card" style="text-align:center;"><div class="monitor-num" style="color:var(--text-3)">8</div><div class="stat-label">尚未簽到</div></div>
+        <div class="card" style="text-align:center;"><div class="monitor-num" id="monitor-checked" style="color:var(--success)">42</div><div class="stat-label">已簽到</div></div>
+        <div class="card" style="text-align:center;"><div class="monitor-num" id="monitor-late" style="color:var(--danger)">3</div><div class="stat-label">遲到</div></div>
+        <div class="card" style="text-align:center;"><div class="monitor-num" id="monitor-pending" style="color:var(--text-3)">8</div><div class="stat-label">尚未簽到</div></div>
       </div>
       <div class="toolbar">
         <div class="search-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="搜尋姓名／部門"></div>
         <select class="select-box"><option>全部狀態</option><option>準時</option><option>遲到</option><option>未簽到</option></select>
-        <button class="btn btn-outline" style="margin-left:auto;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>手動補登</button>
+        <button class="btn btn-outline" style="margin-left:auto;" onclick="openManualCheckinModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>手動補登</button>
       </div>
       <div class="card" style="padding:0; overflow:hidden;">
+        <div class="table-wrap">
         <table>
           <thead><tr><th>姓名</th><th>部門</th><th>簽到時間</th><th>狀態</th><th></th></tr></thead>
-          <tbody>
+          <tbody id="monitor-tbody">
             <tr><td><div class="cell-name"><div class="cell-avatar">林</div><div>林怡君</div></div></td><td>行銷部</td><td class="mono">09:24:12</td><td><span class="badge badge-green"><span class="badge-dot"></span>準時</span></td><td><button class="icon-btn">···</button></td></tr>
             <tr><td><div class="cell-name"><div class="cell-avatar">陳</div><div>陳建宏</div></div></td><td>研發部</td><td class="mono">09:31:45</td><td><span class="badge badge-red"><span class="badge-dot"></span>遲到</span></td><td><button class="icon-btn">···</button></td></tr>
             <tr><td><div class="cell-name"><div class="cell-avatar">王</div><div>王思穎</div></div></td><td>財務部</td><td class="mono">09:20:03</td><td><span class="badge badge-green"><span class="badge-dot"></span>準時</span></td><td><button class="icon-btn">···</button></td></tr>
-            <tr><td><div class="cell-name"><div class="cell-avatar">張</div><div>張家豪</div></div></td><td>業務部</td><td class="mono">—</td><td><span class="badge badge-gray"><span class="badge-dot"></span>未簽到</span></td><td><button class="icon-btn">···</button></td></tr>
+            <tr id="row-zhangjiahao"><td><div class="cell-name"><div class="cell-avatar">張</div><div>張家豪</div></div></td><td>業務部</td><td class="mono" id="zhangjiahao-time">—</td><td id="zhangjiahao-status"><span class="badge badge-gray"><span class="badge-dot"></span>未簽到</span></td><td><button class="icon-btn">···</button></td></tr>
             <tr><td><div class="cell-name"><div class="cell-avatar">李</div><div>李佳蓉</div></div></td><td>人資部</td><td class="mono">09:26:51</td><td><span class="badge badge-green"><span class="badge-dot"></span>準時</span></td><td><button class="icon-btn">···</button></td></tr>
             <tr><td><div class="cell-name"><div class="cell-avatar">吳</div><div>吳承翰</div></div></td><td>資訊部</td><td class="mono">09:29:18</td><td><span class="badge badge-green"><span class="badge-dot"></span>準時</span></td><td><button class="icon-btn">···</button></td></tr>
           </tbody>
         </table>
+        </div>
       </div>
     </section>
 
@@ -686,7 +861,7 @@
     <section class="page" id="page-reports">
       <div class="page-header">
         <div><div class="page-title">報表統計</div><div class="page-sub">出席率與趨勢分析</div></div>
-        <button class="btn btn-outline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M6 11l6 6 6-6M4 21h16"/></svg>匯出報表</button>
+        <button class="btn btn-outline" onclick="openExportReportModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M6 11l6 6 6-6M4 21h16"/></svg>匯出報表</button>
       </div>
       <div class="grid dash-cols" style="margin-bottom:18px;">
         <div class="card chart-card">
@@ -713,6 +888,7 @@
         </div>
       </div>
       <div class="card" style="padding:0; overflow:hidden;">
+        <div class="table-wrap">
         <table>
           <thead><tr><th>會議名稱</th><th>日期</th><th>應到人數</th><th>實到人數</th><th>出席率</th><th>準時率</th></tr></thead>
           <tbody>
@@ -722,6 +898,7 @@
             <tr><td>年度股東會前會</td><td class="mono">2026/06/12</td><td>18</td><td>15</td><td>83%</td><td>80%</td></tr>
           </tbody>
         </table>
+        </div>
       </div>
     </section>
 
@@ -753,11 +930,30 @@
       </div>
 
       <div class="card settings-section" style="margin-bottom:0;">
-        <h3>操作紀錄</h3>
-        <p>後臺操作歷程，供資安稽核使用</p>
-        <div class="log-item"><div class="lt">2026-07-16 09:12</div><div>王承辦 建立會議「部門主管會議」的 QRCode</div></div>
-        <div class="log-item"><div class="lt">2026-07-15 17:40</div><div>李佳蓉 新增帳號「吳承翰」</div></div>
-        <div class="log-item"><div class="lt">2026-07-15 11:05</div><div>王承辦 修改「董事會議」簽到規則</div></div>
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+          <div><h3 style="margin-bottom:2px;">操作紀錄</h3><p style="margin-bottom:0;">後臺操作歷程，供資安稽核使用</p></div>
+          <button class="btn btn-outline btn-sm" onclick="exportLogs()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M6 11l6 6 6-6M4 21h16"/></svg>匯出清單</button>
+        </div>
+        <div class="toolbar" style="margin-top:16px; margin-bottom:10px;">
+          <div class="search-box" style="max-width:260px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input id="log-search" placeholder="搜尋操作人員／內容" oninput="renderLogs(1)"></div>
+          <select class="select-box" id="log-type-filter" onchange="renderLogs(1)">
+            <option value="">全部類型</option>
+            <option value="帳號">帳號</option>
+            <option value="會議">會議</option>
+            <option value="QRCode">QRCode</option>
+            <option value="監控">簽到監控</option>
+            <option value="報表">報表</option>
+            <option value="系統">系統</option>
+          </select>
+          <select class="select-box" id="log-date-filter" onchange="renderLogs(1)">
+            <option value="">全部日期</option>
+            <option value="7">近 7 天</option>
+            <option value="14">近 14 天</option>
+            <option value="30">近 30 天</option>
+          </select>
+        </div>
+        <div id="log-list"></div>
+        <div class="pagination" id="log-pagination"></div>
       </div>
     </section>
   </div>
@@ -828,13 +1024,56 @@
   </div>
 </div>
 
+<!-- ===================== GENERIC MODAL / TOAST / PROJECTION ===================== -->
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this) closeModal()">
+  <div class="modal" id="modal-box"></div>
+</div>
+<div class="toast-wrap" id="toast-wrap"></div>
+<div class="projection-overlay" id="projection-overlay">
+  <button class="projection-close" onclick="closeProjection()">✕ 離開投影模式（Esc）</button>
+  <div class="projection-qr"><div class="qr-grid" id="projection-qr-grid"></div></div>
+  <div class="projection-title" id="projection-title">部門主管會議</div>
+  <div class="projection-sub">請使用手機掃描 QRCode 完成簽到</div>
+  <div class="projection-countdown"><span id="projection-countdown">60</span> 秒後自動刷新</div>
+</div>
+
 <script>
+  // ---------- responsive: mode-bar height sync ----------
+  function syncModeBarHeight(){
+    const bar = document.querySelector('.mode-bar');
+    if(bar) document.documentElement.style.setProperty('--modebar-h', bar.offsetHeight + 'px');
+  }
+  window.addEventListener('resize', syncModeBarHeight);
+  window.addEventListener('load', syncModeBarHeight);
+  syncModeBarHeight();
+
+  // ---------- responsive: mobile sidebar drawer ----------
+  function toggleSidebar(){
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebar-backdrop').classList.toggle('show');
+  }
+  function closeSidebar(){
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebar-backdrop').classList.remove('show');
+  }
+
+  // ---------- text size toggle ----------
+  function setFontSize(size){
+    document.documentElement.setAttribute('data-fontsize', size);
+    ['small','medium','large'].forEach(s=>{
+      document.getElementById('fs-'+s).classList.toggle('active', s===size);
+    });
+    setTimeout(syncModeBarHeight, 50);
+  }
+  document.documentElement.setAttribute('data-fontsize', 'medium');
+
   // ---------- mode switch ----------
   function setMode(mode){
     document.getElementById('admin-shell').style.display = mode==='admin' ? 'grid' : 'none';
     document.getElementById('frontend-shell').style.display = mode==='fe' ? 'flex' : 'none';
     document.getElementById('btn-admin').classList.toggle('active', mode==='admin');
     document.getElementById('btn-fe').classList.toggle('active', mode==='fe');
+    closeSidebar();
   }
 
   // ---------- admin page nav ----------
@@ -846,6 +1085,7 @@
     if(el) el.classList.add('active');
     document.getElementById('crumb-title').textContent = crumbNames[id];
     window.scrollTo({top:0, behavior:'smooth'});
+    closeSidebar();
   }
 
   // meeting selector highlight (qrcode page)
@@ -928,6 +1168,496 @@
   function resetFlow(){
     switchScreen('screen-scan');
   }
+
+  /* ==================================================================
+     GENERIC MODAL SYSTEM
+  ================================================================== */
+  function openModal(title, sub, bodyHtml, footerHtml, size){
+    const box = document.getElementById('modal-box');
+    box.className = 'modal' + (size ? ' modal-' + size : '');
+    box.innerHTML = `
+      <div class="modal-header">
+        <div><h2>${title}</h2>${sub ? `<p>${sub}</p>` : ''}</div>
+        <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+      </div>
+      <div class="modal-body">${bodyHtml}</div>
+      <div class="modal-footer">${footerHtml}</div>`;
+    document.getElementById('modal-overlay').classList.add('show');
+  }
+  function closeModal(){
+    document.getElementById('modal-overlay').classList.remove('show');
+  }
+  function selectRadioCard(el, groupName){
+    el.parentElement.querySelectorAll('.radio-card').forEach(c=>c.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  /* ==================================================================
+     TOAST
+  ================================================================== */
+  function showToast(message){
+    const wrap = document.getElementById('toast-wrap');
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg><span>${message}</span>`;
+    wrap.appendChild(t);
+    setTimeout(()=>{
+      t.classList.add('hide');
+      setTimeout(()=>t.remove(), 220);
+    }, 3200);
+  }
+
+  /* ==================================================================
+     1. 建立新會議
+  ================================================================== */
+  function openCreateMeetingModal(){
+    const body = `
+      <div class="form-section-title">基本資訊</div>
+      <div class="form-row"><label>會議名稱</label><input class="form-input" placeholder="例如：2026年第四季部門主管會議"></div>
+      <div class="form-grid-2">
+        <div class="form-row"><label>會議日期</label><input type="date" class="form-input" value="2026-08-10"></div>
+        <div class="form-row"><label>會議地點</label><input class="form-input" placeholder="例如：3F 大會議室"></div>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-row"><label>開始時間</label><input type="time" class="form-input" value="09:30"></div>
+        <div class="form-row"><label>結束時間</label><input type="time" class="form-input" value="11:30"></div>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-row"><label>主辦單位</label><input class="form-input" placeholder="例如：總經理室"></div>
+        <div class="form-row"><label>預期出席人數</label><input type="number" class="form-input" placeholder="例如：50"></div>
+      </div>
+
+      <div class="form-section-title">簽到規則</div>
+      <div class="form-grid-2">
+        <div class="form-row"><label>簽到開放時間</label><select class="form-select"><option>會議前 30 分鐘</option><option>會議前 15 分鐘</option><option>會議前 10 分鐘</option><option>會議開始時</option></select></div>
+        <div class="form-row"><label>遲到認定時間</label><select class="form-select"><option>會議開始後 10 分鐘</option><option>會議開始後 5 分鐘</option><option>會議開始後 15 分鐘</option></select></div>
+      </div>
+      <label class="checkbox-row"><input type="checkbox" checked> 需二次驗證（輸入員編末四碼）</label>
+      <label class="checkbox-row"><input type="checkbox"> 允許代理簽到</label>
+
+      <div class="form-section-title">與會名單設定</div>
+      <div class="radio-card-group" style="margin-bottom:14px;">
+        <div class="radio-card active" onclick="selectRadioCard(this)"><div class="t">從帳號名單選取</div><div class="s">由已建檔之簽到者中勾選</div></div>
+        <div class="radio-card" onclick="selectRadioCard(this)"><div class="t">開放自由報到</div><div class="s">未預先建檔者可現場登記</div></div>
+      </div>
+      <div class="attendee-pick-list">
+        <label class="attendee-pick-item"><input type="checkbox" checked>林怡君・行銷部・經理</label>
+        <label class="attendee-pick-item"><input type="checkbox" checked>陳建宏・研發部・工程師</label>
+        <label class="attendee-pick-item"><input type="checkbox" checked>王思穎・財務部・副理</label>
+        <label class="attendee-pick-item"><input type="checkbox">張家豪・業務部・專員</label>
+        <label class="attendee-pick-item"><input type="checkbox" checked>李佳蓉・人資部・主任</label>
+        <label class="attendee-pick-item"><input type="checkbox" checked>吳承翰・資訊部・工程師</label>
+      </div>`;
+    const footer = `
+      <button class="btn btn-outline" onclick="closeModal()">取消</button>
+      <button class="btn btn-outline" onclick="submitMeeting('draft')">儲存草稿</button>
+      <button class="btn btn-primary" onclick="submitMeeting('publish')">建立並發布</button>`;
+    openModal('建立新會議', '設定會議資訊、簽到規則與與會名單', body, footer, 'lg');
+  }
+  function submitMeeting(mode){
+    closeModal();
+    showToast(mode === 'draft' ? '會議已儲存為草稿' : '會議已建立並發布，QRCode 可於「QRCode 管理」產生');
+  }
+
+  /* ==================================================================
+     4a／4b. 編輯會議／發布會議
+  ================================================================== */
+  function openEditMeetingModal(name, btnEl){
+    const card = btnEl.closest('.meeting-card');
+    const title = card.querySelector('.meeting-title').textContent.trim();
+    const metaLines = card.querySelectorAll('.meeting-meta div');
+    const body = `
+      <div class="form-section-title">基本資訊</div>
+      <div class="form-row"><label>會議名稱</label><input class="form-input" value="${title}"></div>
+      <div class="form-grid-2">
+        <div class="form-row"><label>會議地點</label><input class="form-input" value="${metaLines[1] ? metaLines[1].textContent.trim() : ''}"></div>
+        <div class="form-row"><label>預期出席人數</label><input type="number" class="form-input" placeholder="例如：65"></div>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-row"><label>開始時間</label><input type="time" class="form-input" value="10:00"></div>
+        <div class="form-row"><label>結束時間</label><input type="time" class="form-input" value="12:00"></div>
+      </div>
+      <div class="form-section-title">簽到規則</div>
+      <div class="form-grid-2">
+        <div class="form-row"><label>簽到開放時間</label><select class="form-select"><option>會議前 30 分鐘</option><option>會議前 15 分鐘</option></select></div>
+        <div class="form-row"><label>遲到認定時間</label><select class="form-select"><option>會議開始後 10 分鐘</option></select></div>
+      </div>
+      <label class="checkbox-row"><input type="checkbox" checked> 需二次驗證（輸入員編末四碼）</label>`;
+    const footer = `
+      <button class="btn btn-outline" onclick="closeModal()">取消</button>
+      <button class="btn btn-primary" onclick="closeModal(); showToast('已儲存「${name}」的變更')">儲存變更</button>`;
+    openModal('編輯會議', name, body, footer, 'lg');
+  }
+
+  function confirmPublishMeeting(name, btnEl){
+    const card = btnEl.closest('.meeting-card');
+    const body = `<p style="font-size:calc(13.5px * var(--fs-scale)); color:var(--text-2); line-height:1.7;">確定要發布「<b style="color:var(--text)">${name}</b>」嗎？發布後，與會名單中的人員將可看到會議資訊，您也可以前往「QRCode 管理」產生簽到碼。</p>`;
+    const footer = `
+      <button class="btn btn-outline" onclick="closeModal()">取消</button>
+      <button class="btn btn-primary" onclick="doPublish('${name}')">確認發布</button>`;
+    openModal('發布會議', null, body, footer, 'sm');
+    window._publishCard = card;
+  }
+  function doPublish(name){
+    closeModal();
+    const card = window._publishCard;
+    if(card){
+      const badge = card.querySelector('.meeting-top .badge');
+      badge.className = 'badge badge-green';
+      badge.innerHTML = '<span class="badge-dot"></span>已發布';
+      const actions = card.querySelector('.meeting-actions');
+      actions.innerHTML = `<button class="btn btn-outline btn-sm" style="flex:1" onclick="openEditMeetingModal('${name}', this)">編輯</button><button class="btn btn-navy btn-sm" style="flex:1" onclick="goToQRCodeFor('${name}')">產生 QRCode</button>`;
+    }
+    showToast(`「${name}」已發布，與會者將可掃描簽到`);
+  }
+
+  /* ---- 產生 QRCode 導頁 ---- */
+  function goToQRCodeFor(name){
+    showPage('qrcode', document.querySelectorAll('.nav-item')[3]);
+    let matched = false;
+    document.querySelectorAll('.meeting-select-item').forEach(item=>{
+      item.classList.remove('active');
+      if(item.querySelector('.t').textContent.trim() === name){
+        item.classList.add('active');
+        matched = true;
+      }
+    });
+    qrSeconds = 60;
+    generateQR();
+    if(!matched) showToast(`已為「${name}」建立 QRCode`);
+  }
+
+  /* ==================================================================
+     2. 新增帳號
+  ================================================================== */
+  function openAddAccountModal(){
+    const body = `
+      <div class="form-grid-2">
+        <div class="form-row"><label>姓名</label><input class="form-input" id="acc-name" placeholder="例如：黃子軒"></div>
+        <div class="form-row"><label>員工編號</label><input class="form-input" id="acc-no" placeholder="例如：E11207"></div>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-row"><label>部門</label><select class="form-select" id="acc-dept"><option>行銷部</option><option>研發部</option><option>財務部</option><option>業務部</option><option>人資部</option><option>資訊部</option></select></div>
+        <div class="form-row"><label>職稱</label><input class="form-input" id="acc-title" placeholder="例如：專員"></div>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-row"><label>Email</label><input class="form-input" id="acc-email" placeholder="name@company.com"></div>
+        <div class="form-row"><label>聯絡電話</label><input class="form-input" id="acc-phone" placeholder="0912-345-678"></div>
+      </div>
+      <div class="form-row"><label>系統角色</label><select class="form-select" id="acc-role"><option>一般使用者</option><option>會議管理者</option><option>系統管理員</option></select></div>
+      <div class="form-row"><label>識別照片（選填）</label>
+        <div class="dropzone" style="padding:22px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 15l-5-5-9 9"/></svg>
+          <div class="t" style="font-size:calc(12.5px * var(--fs-scale));">點擊上傳照片</div><div class="s">支援 JPG／PNG，檔案大小 5MB 以內</div>
+        </div>
+      </div>
+      <label class="checkbox-row"><input type="checkbox" checked> 啟用此帳號</label>`;
+    const footer = `
+      <button class="btn btn-outline" onclick="closeModal()">取消</button>
+      <button class="btn btn-primary" onclick="submitAccount()">新增帳號</button>`;
+    openModal('新增帳號', '設定系統操作帳號或簽到者基本資料', body, footer, 'lg');
+  }
+  function submitAccount(){
+    const name = document.getElementById('acc-name').value.trim() || '黃子軒';
+    const no = document.getElementById('acc-no').value.trim() || 'E11207';
+    const dept = document.getElementById('acc-dept').value;
+    const title = document.getElementById('acc-title').value.trim() || '專員';
+    const email = document.getElementById('acc-email').value.trim() || 'newuser@company.com';
+    const role = document.getElementById('acc-role').value;
+    closeModal();
+    const tbody = document.getElementById('accounts-tbody');
+    const tr = document.createElement('tr');
+    tr.className = 'new-row';
+    tr.innerHTML = `<td><div class="cell-name"><div class="cell-avatar">${name.charAt(0)}</div><div>${name}</div></div></td><td class="mono">${no}</td><td>${dept}・${title}</td><td class="mono">${email}</td><td>${role}</td><td><span class="badge badge-green"><span class="badge-dot"></span>啟用</span></td><td><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button></td>`;
+    tbody.prepend(tr);
+    showToast(`帳號已新增：${name}`);
+  }
+
+  /* ==================================================================
+     3. 匯入 Excel
+  ================================================================== */
+  function openImportExcelModal(){
+    const body = `
+      <div class="step-indicator">
+        <div class="step-dot active" id="istep-1"><div class="n">1</div>上傳檔案</div>
+        <div class="step-line"></div>
+        <div class="step-dot" id="istep-2"><div class="n">2</div>資料預覽</div>
+        <div class="step-line"></div>
+        <div class="step-dot" id="istep-3"><div class="n">3</div>完成匯入</div>
+      </div>
+      <div id="import-panel-1">
+        <div class="dropzone" onclick="simulateFileSelect()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v13M6 11l6 6 6-6M4 21h16"/></svg>
+          <div class="t">拖曳檔案至此，或點擊選擇檔案</div>
+          <div class="s">支援 .xlsx／.csv，單檔上限 5MB</div>
+        </div>
+        <div class="form-row" style="margin-top:16px;"><a href="#" onclick="return false;" style="font-size:calc(12px * var(--fs-scale)); color:var(--amber-dark); font-weight:600; text-decoration:none;">下載匯入範本 .xlsx</a></div>
+      </div>
+      <div id="import-panel-2" style="display:none;">
+        <div class="info-banner">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+          <div>已解析「<b>簽到者名單_2026Q3.xlsx</b>」共 24 筆資料，其中 1 筆（員編 E10231）與既有帳號重複，匯入時將自動略過。</div>
+        </div>
+        <div style="border:1px solid var(--border); border-radius:10px; overflow:auto; max-height:220px;">
+          <table style="font-size:calc(12px * var(--fs-scale));">
+            <thead><tr><th>姓名</th><th>員編</th><th>部門</th><th>Email</th></tr></thead>
+            <tbody>
+              <tr><td>黃子軒</td><td class="mono">E11207</td><td>業務部</td><td class="mono">zih.huang@company.com</td></tr>
+              <tr><td>周美玲</td><td class="mono">E11208</td><td>行銷部</td><td class="mono">mling.chou@company.com</td></tr>
+              <tr><td>許育誠</td><td class="mono">E11209</td><td>研發部</td><td class="mono">yc.hsu@company.com</td></tr>
+              <tr style="opacity:.5;"><td>林怡君</td><td class="mono">E10231</td><td>行銷部</td><td class="mono">yijun.lin@company.com（重複）</td></tr>
+              <tr><td>…</td><td class="mono">…</td><td>…</td><td class="mono">其餘 20 筆</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div id="import-panel-3" style="display:none; text-align:center; padding:20px 0;">
+        <div class="progress-full"><div class="progress-full-fill" id="import-progress"></div></div>
+        <div class="progress-full-label" id="import-progress-label">準備匯入…</div>
+      </div>`;
+    const footer = `
+      <button class="btn btn-outline" onclick="closeModal()" id="import-cancel-btn">取消</button>
+      <button class="btn btn-primary" id="import-next-btn" style="display:none;" onclick="startImport()">確認匯入 23 筆資料</button>`;
+    openModal('匯入 Excel 名單', '批次匯入簽到者基本資料', body, footer, 'lg');
+  }
+  function simulateFileSelect(){
+    document.querySelector('#import-panel-1 .dropzone .t').textContent = '解析中…';
+    setTimeout(()=>{
+      document.getElementById('import-panel-1').style.display = 'none';
+      document.getElementById('import-panel-2').style.display = 'block';
+      document.getElementById('istep-1').classList.remove('active'); document.getElementById('istep-1').classList.add('done');
+      document.getElementById('istep-2').classList.add('active');
+      document.getElementById('import-next-btn').style.display = 'inline-flex';
+    }, 700);
+  }
+  function startImport(){
+    document.getElementById('import-panel-2').style.display = 'none';
+    document.getElementById('import-panel-3').style.display = 'block';
+    document.getElementById('istep-2').classList.remove('active'); document.getElementById('istep-2').classList.add('done');
+    document.getElementById('istep-3').classList.add('active');
+    document.getElementById('import-next-btn').style.display = 'none';
+    document.getElementById('import-cancel-btn').style.display = 'none';
+    let pct = 0;
+    const bar = document.getElementById('import-progress');
+    const label = document.getElementById('import-progress-label');
+    const timer = setInterval(()=>{
+      pct += 8;
+      if(pct >= 100){
+        pct = 100;
+        clearInterval(timer);
+        label.textContent = '匯入完成，成功新增 23 筆資料';
+        setTimeout(()=>{
+          closeModal();
+          showToast('已成功匯入 23 筆帳號資料');
+          const tbody = document.getElementById('accounts-tbody');
+          [['黃子軒','E11207','業務部','專員','zih.huang@company.com'],['周美玲','E11208','行銷部','專員','mling.chou@company.com']].forEach(r=>{
+            const tr = document.createElement('tr'); tr.className='new-row';
+            tr.innerHTML = `<td><div class="cell-name"><div class="cell-avatar">${r[0].charAt(0)}</div><div>${r[0]}</div></div></td><td class="mono">${r[1]}</td><td>${r[2]}・${r[3]}</td><td class="mono">${r[4]}</td><td>一般使用者</td><td><span class="badge badge-green"><span class="badge-dot"></span>啟用</span></td><td><button class="icon-btn">···</button></td>`;
+            tbody.prepend(tr);
+          });
+        }, 500);
+      } else {
+        label.textContent = `匯入中… ${pct}%`;
+      }
+      bar.style.width = pct + '%';
+    }, 120);
+  }
+
+  /* ==================================================================
+     6. 手動補登（簽到監控）
+  ================================================================== */
+  function openManualCheckinModal(){
+    const body = `
+      <div class="form-row"><label>選擇人員</label>
+        <select class="form-select" id="mc-person">
+          <option value="張家豪|業務部">張家豪・業務部（尚未簽到）</option>
+          <option value="其他|現場報到">其他／現場報到人員</option>
+        </select>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-row"><label>簽到時間</label><input type="time" class="form-input" id="mc-time" value="09:35"></div>
+        <div class="form-row"><label>簽到狀態</label><select class="form-select" id="mc-status"><option>準時</option><option>遲到</option></select></div>
+      </div>
+      <div class="form-row"><label>備註</label><textarea class="form-textarea" placeholder="例如：現場報到未攜帶手機，由承辦人員協助登記">現場報到未攜帶手機，由承辦人員協助登記</textarea></div>`;
+    const footer = `
+      <button class="btn btn-outline" onclick="closeModal()">取消</button>
+      <button class="btn btn-primary" onclick="submitManualCheckin()">確認補登</button>`;
+    openModal('手動補登簽到', '部門主管會議・07/16（四）09:30', body, footer);
+  }
+  function submitManualCheckin(){
+    const person = document.getElementById('mc-person').value.split('|');
+    const time = document.getElementById('mc-time').value || '09:35';
+    const status = document.getElementById('mc-status').value;
+    closeModal();
+    const name = person[0];
+    if(name === '張家豪'){
+      document.getElementById('zhangjiahao-time').textContent = time + ':00';
+      document.getElementById('zhangjiahao-status').innerHTML = status === '準時'
+        ? '<span class="badge badge-green"><span class="badge-dot"></span>準時（補登）</span>'
+        : '<span class="badge badge-red"><span class="badge-dot"></span>遲到（補登）</span>';
+      document.getElementById('row-zhangjiahao').classList.add('new-row');
+      document.getElementById('monitor-pending').textContent = Math.max(0, parseInt(document.getElementById('monitor-pending').textContent) - 1);
+      document.getElementById('monitor-checked').textContent = parseInt(document.getElementById('monitor-checked').textContent) + 1;
+    }
+    showToast(`已補登「${name}」的簽到紀錄`);
+  }
+
+  /* ==================================================================
+     7. 匯出報表
+  ================================================================== */
+  function openExportReportModal(){
+    const body = `
+      <div class="form-row"><label>匯出格式</label>
+        <div class="radio-card-group">
+          <div class="radio-card active" onclick="selectRadioCard(this)"><div class="t">Excel (.xlsx)</div><div class="s">可另行編輯與樞紐分析</div></div>
+          <div class="radio-card" onclick="selectRadioCard(this)"><div class="t">PDF</div><div class="s">適合列印與簽核存檔</div></div>
+          <div class="radio-card" onclick="selectRadioCard(this)"><div class="t">CSV</div><div class="s">適合匯入其他系統</div></div>
+          <div class="radio-card" onclick="selectRadioCard(this)"><div class="t">Google Sheets</div><div class="s">直接匯出至雲端表單</div></div>
+        </div>
+      </div>
+      <div class="form-row"><label>資料範圍</label><select class="form-select"><option>部門主管會議（本次）</option><option>近 30 天所有會議</option><option>近 90 天所有會議</option><option>自訂區間</option></select></div>
+      <div class="form-row"><label>匯出內容</label>
+        <label class="checkbox-row"><input type="checkbox" checked> 簽到明細（含時間戳記）</label>
+        <label class="checkbox-row"><input type="checkbox" checked> 出席率統計</label>
+        <label class="checkbox-row"><input type="checkbox"> 部門彙總比較</label>
+        <label class="checkbox-row"><input type="checkbox"> 遲到／異常清單</label>
+      </div>
+      <div id="export-progress-wrap" style="display:none;">
+        <div class="progress-full"><div class="progress-full-fill" id="export-progress"></div></div>
+        <div class="progress-full-label" id="export-progress-label">準備匯出…</div>
+      </div>`;
+    const footer = `
+      <button class="btn btn-outline" onclick="closeModal()" id="export-cancel-btn">取消</button>
+      <button class="btn btn-primary" id="export-start-btn" onclick="startExport()">開始匯出</button>`;
+    openModal('匯出報表', '選擇格式與內容範圍', body, footer, 'lg');
+  }
+  function startExport(){
+    document.getElementById('export-progress-wrap').style.display = 'block';
+    document.getElementById('export-start-btn').style.display = 'none';
+    document.getElementById('export-cancel-btn').textContent = '關閉';
+    let pct = 0;
+    const bar = document.getElementById('export-progress');
+    const label = document.getElementById('export-progress-label');
+    const timer = setInterval(()=>{
+      pct += 10;
+      if(pct >= 100){
+        pct = 100;
+        clearInterval(timer);
+        label.textContent = '匯出完成：部門主管會議_出席統計報表.xlsx';
+        setTimeout(()=>{
+          closeModal();
+          showToast('報表已匯出：部門主管會議_出席統計報表.xlsx');
+        }, 600);
+      } else {
+        label.textContent = `匯出中… ${pct}%`;
+      }
+      bar.style.width = pct + '%';
+    }, 110);
+  }
+
+  /* ==================================================================
+     5. 投影模式
+  ================================================================== */
+  function projectionFinder(grid, ox, oy){
+    for(let y=0;y<7;y++) for(let x=0;x<7;x++){
+      const isBorder = (x===0||x===6||y===0||y===6);
+      const isInner = (x>=2&&x<=4&&y>=2&&y<=4);
+      grid[oy+y][ox+x] = (isBorder||isInner) ? 1 : 0;
+    }
+  }
+  function generateProjectionQR(){
+    const N = 21;
+    let grid = Array.from({length:N},()=>Array(N).fill(0));
+    for(let y=0;y<N;y++) for(let x=0;x<N;x++) grid[y][x] = Math.random() > 0.58 ? 1 : 0;
+    projectionFinder(grid, 0, 0); projectionFinder(grid, N-7, 0); projectionFinder(grid, 0, N-7);
+    const container = document.getElementById('projection-qr-grid');
+    container.innerHTML = '';
+    for(let y=0;y<N;y++) for(let x=0;x<N;x++){
+      const d = document.createElement('div');
+      d.className = 'qr-mod' + (grid[y][x] ? ' on' : '');
+      container.appendChild(d);
+    }
+  }
+  let projectionTimer = null;
+  let projSeconds = 60;
+  function openProjection(){
+    const activeItem = document.querySelector('.meeting-select-item.active .t');
+    document.getElementById('projection-title').textContent = activeItem ? activeItem.textContent.trim() : '部門主管會議';
+    generateProjectionQR();
+    projSeconds = 60;
+    document.getElementById('projection-countdown').textContent = projSeconds;
+    document.getElementById('projection-overlay').classList.add('show');
+    projectionTimer = setInterval(()=>{
+      projSeconds--;
+      if(projSeconds <= 0){ projSeconds = 60; generateProjectionQR(); }
+      document.getElementById('projection-countdown').textContent = projSeconds;
+    }, 1000);
+  }
+  function closeProjection(){
+    document.getElementById('projection-overlay').classList.remove('show');
+    clearInterval(projectionTimer);
+  }
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape'){
+      closeProjection();
+      closeModal();
+    }
+  });
+
+  /* ==================================================================
+     8. 操作紀錄查詢／分頁／匯出
+  ================================================================== */
+  const logData = [
+    {time:'2026-07-16 09:12', type:'QRCode', text:'王承辦 建立會議「部門主管會議」的 QRCode'},
+    {time:'2026-07-15 17:40', type:'帳號', text:'李佳蓉 新增帳號「吳承翰」'},
+    {time:'2026-07-15 11:05', type:'會議', text:'王承辦 修改「董事會議」簽到規則'},
+    {time:'2026-07-14 16:22', type:'系統', text:'系統管理員 調整 QRCode 動態刷新頻率為 60 秒'},
+    {time:'2026-07-14 10:03', type:'帳號', text:'李佳蓉 停用帳號「張家豪」'},
+    {time:'2026-07-13 15:47', type:'會議', text:'王承辦 建立會議「新產品發表會」（草稿）'},
+    {time:'2026-07-12 09:30', type:'QRCode', text:'系統 自動刷新「部門主管會議」QRCode'},
+    {time:'2026-07-11 14:18', type:'帳號', text:'李佳蓉 匯入 24 筆帳號資料（Excel）'},
+    {time:'2026-07-10 08:55', type:'系統', text:'系統管理員 匯出操作紀錄清單'},
+    {time:'2026-07-09 13:20', type:'會議', text:'王承辦 發布會議「資安教育訓練」'},
+    {time:'2026-07-08 17:02', type:'監控', text:'王承辦 手動補登「陳建宏」簽到紀錄'},
+    {time:'2026-07-07 09:41', type:'報表', text:'王承辦 匯出「Q2 出席率報表」'},
+  ];
+  const logBadgeClass = {'帳號':'badge-blue','會議':'badge-amber','QRCode':'badge-green','系統':'badge-gray','監控':'badge-red','報表':'badge-blue'};
+  let logCurrentPage = 1;
+  const LOG_PAGE_SIZE = 4;
+  function renderLogs(page){
+    logCurrentPage = page;
+    const search = (document.getElementById('log-search').value || '').toLowerCase();
+    const typeFilter = document.getElementById('log-type-filter').value;
+    let filtered = logData.filter(l =>
+      (!search || l.text.toLowerCase().includes(search)) &&
+      (!typeFilter || l.type === typeFilter)
+    );
+    const totalPages = Math.max(1, Math.ceil(filtered.length / LOG_PAGE_SIZE));
+    if(logCurrentPage > totalPages) logCurrentPage = totalPages;
+    const start = (logCurrentPage - 1) * LOG_PAGE_SIZE;
+    const pageItems = filtered.slice(start, start + LOG_PAGE_SIZE);
+    const list = document.getElementById('log-list');
+    list.innerHTML = pageItems.length ? pageItems.map(l => `
+      <div class="log-item2">
+        <div class="lt">${l.time}</div>
+        <span class="badge ${logBadgeClass[l.type] || 'badge-gray'} lb"><span class="badge-dot"></span>${l.type}</span>
+        <div>${l.text}</div>
+      </div>`).join('') : `<div style="padding:24px 0; text-align:center; color:var(--text-3); font-size:calc(12.5px * var(--fs-scale));">查無符合條件的操作紀錄</div>`;
+
+    let pagHtml = `<div>共 ${filtered.length} 筆・第 ${logCurrentPage} / ${totalPages} 頁</div><div class="pages">`;
+    pagHtml += `<button ${logCurrentPage===1?'disabled':''} onclick="renderLogs(${logCurrentPage-1})">‹</button>`;
+    for(let i=1;i<=totalPages;i++){
+      pagHtml += `<button class="${i===logCurrentPage?'active':''}" onclick="renderLogs(${i})">${i}</button>`;
+    }
+    pagHtml += `<button ${logCurrentPage===totalPages?'disabled':''} onclick="renderLogs(${logCurrentPage+1})">›</button></div>`;
+    document.getElementById('log-pagination').innerHTML = pagHtml;
+  }
+  function exportLogs(){
+    showToast('操作紀錄已匯出：system_log_2026-07-16.csv');
+  }
+  document.addEventListener('DOMContentLoaded', ()=>{ renderLogs(1); });
+  // in case DOMContentLoaded already fired before this script executes
+  if(document.readyState !== 'loading'){ renderLogs(1); }
 </script>
 </body>
 </html>
