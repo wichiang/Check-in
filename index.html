@@ -321,8 +321,7 @@
   .log-item .lt{font-family:var(--font-mono); color:var(--text-3); flex-shrink:0; width:130px;}
 
   /* ===================== FRONTEND SHELL ===================== */
-  #frontend-shell{display:none; min-height:calc(100vh - var(--modebar-h, 57px)); padding:60px 20px; flex-direction:column; align-items:center; background:
-    radial-gradient(circle at 50% 0%, #1c2b4d 0%, var(--bg) 62%);}
+  #frontend-shell{display:none; min-height:calc(100vh - var(--modebar-h, 57px)); padding:60px 20px; flex-direction:column; align-items:center; background:var(--bg);}
   .fe-caption{text-align:center; color:var(--text-2); font-size:calc(13px * var(--fs-scale)); margin-bottom:30px; max-width:420px;}
   .fe-caption b{color:var(--text); font-family:var(--font-display);}
 
@@ -348,21 +347,23 @@
   .scan-header .a{font-family:var(--font-display); font-weight:700; font-size:calc(15px * var(--fs-scale));}
   .scan-header .b{font-size:calc(11px * var(--fs-scale)); color:rgba(255,255,255,0.5); margin-top:2px;}
   .scan-area{flex:1; display:flex; align-items:center; justify-content:center; position:relative;}
-  .scan-frame{width:200px; height:200px; position:relative;}
+  .scan-frame{width:224px; min-height:248px; position:relative; display:flex; align-items:center; justify-content:center;}
   .scan-corner{position:absolute; width:26px; height:26px; border:3px solid var(--amber);}
   .scan-corner.tl{top:0; left:0; border-right:none; border-bottom:none; border-radius:6px 0 0 0;}
   .scan-corner.tr{top:0; right:0; border-left:none; border-bottom:none; border-radius:0 6px 0 0;}
   .scan-corner.bl{bottom:0; left:0; border-right:none; border-top:none; border-radius:0 0 0 6px;}
   .scan-corner.br{bottom:0; right:0; border-left:none; border-top:none; border-radius:0 0 6px 0;}
-  .scan-line{position:absolute; left:6px; right:6px; height:2px; background:linear-gradient(90deg,transparent,var(--amber),transparent); top:10px; animation:scanmove 2.2s ease-in-out infinite;}
-  @keyframes scanmove{0%{top:6px;}50%{top:190px;}100%{top:6px;}}
+  .scan-line{position:absolute; left:14px; right:14px; height:2px; background:linear-gradient(90deg,transparent,var(--amber),transparent); top:3%; animation:scanmove 2.2s ease-in-out infinite;}
+  @keyframes scanmove{0%{top:3%;}50%{top:94%;}100%{top:3%;}}
+  .scan-qr-card{background:#fff; border-radius:14px; padding:14px 14px 11px; width:184px; box-shadow:0 12px 28px rgba(0,0,0,0.35);}
+  .scan-qr-grid{width:100%; aspect-ratio:1/1; display:grid; grid-template-columns:repeat(21,1fr); grid-template-rows:repeat(21,1fr); gap:1px;}
+  .scan-qr-mod{background:transparent; border-radius:1px;}
+  .scan-qr-mod.on{background:var(--navy);}
+  .scan-qr-meta{text-align:center; margin-top:8px; padding-top:7px; border-top:1px dashed var(--border);}
+  .scan-qr-meta .t{font-size:calc(11px * var(--fs-scale)); font-weight:700; color:var(--navy); line-height:1.35;}
+  .scan-qr-meta .s{font-size:calc(9.5px * var(--fs-scale)); color:var(--text-3); margin-top:2px;}
   .scan-hint{text-align:center; font-size:calc(12px * var(--fs-scale)); color:rgba(255,255,255,0.55); padding:0 30px 8px;}
   .scan-bottom{padding:16px 22px 28px;}
-  .scan-meeting-card{
-    background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:14px; padding:14px 16px; margin-bottom:14px;
-  }
-  .scan-meeting-card .t{font-size:calc(13px * var(--fs-scale)); font-weight:600;}
-  .scan-meeting-card .s{font-size:calc(11px * var(--fs-scale)); color:rgba(255,255,255,0.5); margin-top:3px;}
   .scan-btn{
     width:100%; background:var(--amber); color:#fff; border:none; border-radius:14px; padding:15px; font-size:calc(14px * var(--fs-scale)); font-weight:700;
     display:flex; align-items:center; justify-content:center; gap:8px;
@@ -1173,11 +1174,17 @@
             <div class="scan-corner tl"></div><div class="scan-corner tr"></div>
             <div class="scan-corner bl"></div><div class="scan-corner br"></div>
             <div class="scan-line"></div>
+            <div class="scan-qr-card">
+              <div class="scan-qr-grid" id="scan-qr-grid"></div>
+              <div class="scan-qr-meta">
+                <div class="t">2026年第三季部門主管會議</div>
+                <div class="s">07/16（四）09:30・3F 大會議室</div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="scan-hint">掃描成功後將自動帶出您的基本資料</div>
         <div class="scan-bottom">
-          <div class="scan-meeting-card"><div class="t">2026年第三季部門主管會議</div><div class="s">07/16（四）09:30・3F 大會議室</div></div>
           <button class="scan-btn" id="scan-trigger" onclick="simulateScan()"><span class="spinner" id="scan-spinner"></span><span id="scan-btn-text">模擬掃描 QRCode</span></button>
         </div>
       </div>
@@ -1426,6 +1433,27 @@
     document.getElementById('qr-token').textContent = 'token: ' + tok + '...';
   }
   generateQR();
+
+  // ---------- mock QR for mobile pre-scan poster (static, like a printed/projected code) ----------
+  function generateScanQR(){
+    const N = 21;
+    let grid = Array.from({length:N},()=>Array(N).fill(0));
+    for(let y=0;y<N;y++) for(let x=0;x<N;x++) grid[y][x] = Math.random() > 0.58 ? 1 : 0;
+    buildFinder(grid, N, 0, 0);
+    buildFinder(grid, N, N-7, 0);
+    buildFinder(grid, N, 0, N-7);
+    const container = document.getElementById('scan-qr-grid');
+    if(!container) return;
+    container.innerHTML = '';
+    for(let y=0;y<N;y++){
+      for(let x=0;x<N;x++){
+        const d = document.createElement('div');
+        d.className = 'scan-qr-mod' + (grid[y][x] ? ' on' : '');
+        container.appendChild(d);
+      }
+    }
+  }
+  generateScanQR();
 
   /* ==================================================================
      QRCode 獨立網頁模式
