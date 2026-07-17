@@ -553,12 +553,130 @@
     .segmented button{padding:7px 10px; font-size:calc(12px * var(--fs-scale));}
     .stat-value{font-size:calc(23px * var(--fs-scale));}
   }
+  /* ===== login screen ===== */
+  .login-shell{
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(circle at 20% 20%, #1E2E52 0%, var(--navy) 45%, #0F1830 100%);
+    padding:24px;
+  }
+  .login-card{
+    width:100%; max-width:400px; background:var(--surface); border-radius:18px; padding:36px 32px 30px;
+    box-shadow:0 30px 70px -20px rgba(10,16,40,.5); animation:modalIn .2s ease;
+  }
+  .login-brand{display:flex; align-items:center; gap:11px; margin-bottom:26px; justify-content:center;}
+  .login-brand .logo-mark{width:38px;height:38px;border-radius:10px;background:var(--amber);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .login-brand .logo-text{font-family:var(--font-display); font-weight:700; font-size:calc(17px * var(--fs-scale)); color:var(--navy); line-height:1.25;}
+  .login-brand .logo-text span{display:block; font-size:calc(10px * var(--fs-scale)); font-weight:500; letter-spacing:.6px; color:var(--text-3);}
+  .login-title{font-family:var(--font-display); font-size:calc(19px * var(--fs-scale)); font-weight:700; text-align:center; margin-bottom:4px;}
+  .login-sub{font-size:calc(12.5px * var(--fs-scale)); color:var(--text-3); text-align:center; margin-bottom:26px;}
+  .login-field{position:relative;}
+  .login-field .form-input{padding-right:40px;}
+  .pw-eye{position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--text-3); display:flex; padding:4px;}
+  .pw-eye svg{width:17px;height:17px;}
+  .captcha-row{display:flex; gap:10px; align-items:stretch;}
+  .captcha-row .form-input{flex:1;}
+  .captcha-img{
+    width:118px; flex-shrink:0; border-radius:9px; overflow:hidden; border:1px solid var(--border); cursor:pointer;
+    background:#EDEFF6; position:relative;
+  }
+  .captcha-img svg{display:block; width:100%; height:100%;}
+  .captcha-refresh{position:absolute; bottom:3px; right:3px; width:20px;height:20px; border-radius:6px; background:rgba(255,255,255,.9); display:flex; align-items:center; justify-content:center; color:var(--text-2);}
+  .captcha-refresh svg{width:12px;height:12px;}
+  .login-error{
+    display:none; align-items:center; gap:8px; background:var(--danger-light); color:var(--danger); border:1px solid #F3C3C4;
+    border-radius:9px; padding:10px 12px; font-size:calc(12px * var(--fs-scale)); margin-bottom:16px;
+  }
+  .login-error.show{display:flex;}
+  .login-error svg{width:15px;height:15px; flex-shrink:0;}
+  .login-shake{animation:shakeX .38s;}
+  @keyframes shakeX{10%,90%{transform:translateX(-1px);}20%,80%{transform:translateX(2px);}30%,50%,70%{transform:translateX(-5px);}40%,60%{transform:translateX(5px);}}
+  .login-btn{width:100%; justify-content:center; padding:11px; font-size:calc(14px * var(--fs-scale)); margin-top:4px;}
+  .login-foot{display:flex; align-items:center; justify-content:space-between; margin-top:18px; font-size:calc(12px * var(--fs-scale));}
+  .login-foot a{color:var(--amber-dark); font-weight:600; text-decoration:none;}
+  .login-demo-hint{
+    margin-top:20px; background:var(--bg); border-radius:9px; padding:10px 12px; font-size:calc(11.5px * var(--fs-scale));
+    color:var(--text-2); line-height:1.6;
+  }
+  .login-demo-hint b{color:var(--text);}
+
+  /* ===== accounts sub-tabs ===== */
+  .subtabs{display:flex; gap:6px; margin-bottom:18px; border-bottom:1px solid var(--border);}
+  .subtab{
+    padding:10px 4px; margin-right:22px; font-size:calc(13.5px * var(--fs-scale)); font-weight:600; color:var(--text-3);
+    border-bottom:2px solid transparent; cursor:pointer; transition:all .15s; margin-bottom:-1px;
+  }
+  .subtab.active{color:var(--navy); border-bottom-color:var(--amber);}
+  .subtab:hover{color:var(--text);}
+  .subpanel{display:none;}
+  .subpanel.active{display:block;}
+  .perm-tags{display:flex; flex-wrap:wrap; gap:5px; max-width:220px;}
+  .perm-tag{font-size:calc(10.5px * var(--fs-scale)); font-weight:600; background:#EAEEFB; color:#33448B; padding:2px 7px; border-radius:6px; white-space:nowrap;}
+  .perm-matrix{display:grid; grid-template-columns:1fr 1fr; gap:4px 14px; margin-top:6px;}
+  .role-note{font-size:calc(11.5px * var(--fs-scale)); color:var(--text-3); margin-top:6px;}
+
+  /* ===== standalone qr page link ===== */
+  .qr-link-box{
+    width:100%; max-width:420px; display:flex; align-items:center; gap:8px; background:var(--bg); border:1px solid var(--border);
+    border-radius:9px; padding:9px 10px 9px 14px; margin-top:6px;
+  }
+  .qr-link-box .lnk{flex:1; font-family:var(--font-mono); font-size:calc(11.5px * var(--fs-scale)); color:var(--text-2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
 </style>
 </head>
 <body>
 <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="closeSidebar()"></div>
 
-<div class="mode-bar">
+<!-- ===================== LOGIN ===================== -->
+<div class="login-shell" id="login-shell">
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="logo-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16213E" stroke-width="2.6"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM15 15l2 2 3-4"/></svg></div>
+      <div class="logo-text">簽到雲<span>MEETING CHECK-IN 後台管理系統</span></div>
+    </div>
+    <div class="login-title">管理者登入</div>
+    <div class="login-sub">請輸入帳號密碼及圖形驗證碼以繼續</div>
+
+    <div class="login-error" id="login-error">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+      <span id="login-error-text">帳號或密碼錯誤，請重新輸入</span>
+    </div>
+
+    <div class="form-row">
+      <label>帳號</label>
+      <input class="form-input" id="login-user" placeholder="請輸入管理者帳號" autocomplete="username">
+    </div>
+    <div class="form-row">
+      <label>密碼</label>
+      <div class="login-field">
+        <input class="form-input" id="login-pass" type="password" placeholder="請輸入密碼" autocomplete="current-password">
+        <button type="button" class="pw-eye" onclick="toggleLoginPw()" id="login-pw-eye" aria-label="顯示密碼">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>圖形驗證碼</label>
+      <div class="captcha-row">
+        <input class="form-input mono" id="login-captcha" placeholder="請輸入右側驗證碼" maxlength="4" autocomplete="off">
+        <div class="captcha-img" id="captcha-img" onclick="generateCaptcha()" title="看不清楚？點擊更換"></div>
+      </div>
+      <div class="hint">看不清楚？點擊圖片即可更換一組驗證碼</div>
+    </div>
+
+    <button class="btn btn-primary login-btn" onclick="doLogin()">登入後台系統</button>
+
+    <div class="login-foot">
+      <label class="checkbox-row" style="padding:0;"><input type="checkbox" id="login-remember"> 記住我的帳號</label>
+      <a href="#" onclick="return false;">忘記密碼？</a>
+    </div>
+
+    <div class="login-demo-hint">
+      <b>原型示範說明：</b>本畫面僅為高保真原型，任意輸入帳號密碼、並正確輸入圖形驗證碼即可登入。若僅需預覽「前台簽到端」畫面（與會者掃碼簽到，無需登入），可
+      <a href="#" onclick="skipLoginToFrontend(); return false;" style="color:var(--amber-dark); font-weight:600;">點此直接查看 →</a>
+    </div>
+  </div>
+</div>
+
+<div class="mode-bar" id="mode-bar" style="display:none;">
   <button class="hamburger" id="hamburger-btn" onclick="toggleSidebar()" aria-label="開啟選單">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
   </button>
@@ -578,7 +696,7 @@
 </div>
 
 <!-- ===================== ADMIN ===================== -->
-<div id="admin-shell">
+<div id="admin-shell" style="display:none;">
   <aside class="sidebar" id="sidebar">
     <div class="logo">
       <div class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#16213E" stroke-width="2.4"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM15 15l2 2 3-4"/></svg></div>
@@ -623,7 +741,10 @@
       <div class="breadcrumb">後台管理系統 / <b id="crumb-title">儀表板</b></div>
       <div class="topbar-right">
         <div class="live-pill"><span class="pulse"></span>即時同步中</div>
-        <div class="avatar">承辦</div>
+        <div class="avatar" id="topbar-avatar">承辦</div>
+        <button class="icon-btn" onclick="doLogout()" title="登出" aria-label="登出">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>
+        </button>
       </div>
     </div>
 
@@ -696,30 +817,101 @@
     <!-- ---------- ACCOUNTS ---------- -->
     <section class="page" id="page-accounts">
       <div class="page-header">
-        <div><div class="page-title">帳號管理</div><div class="page-sub">維護系統操作帳號與簽到者基本資料</div></div>
-        <div style="display:flex; gap:10px;">
-          <button class="btn btn-outline" onclick="openImportExcelModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M6 11l6 6 6-6M4 21h16"/></svg>匯入 Excel</button>
-          <button class="btn btn-primary" onclick="openAddAccountModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>新增帳號</button>
+        <div><div class="page-title">帳號管理</div><div class="page-sub">維護系統操作帳號、簽到者基本資料，以及系統管理者權限管控</div></div>
+      </div>
+
+      <div class="subtabs">
+        <div class="subtab active" id="subtab-users" onclick="showAccountsTab('users')">使用者帳號</div>
+        <div class="subtab" id="subtab-admins" onclick="showAccountsTab('admins')">系統管理員帳號</div>
+      </div>
+
+      <!-- ===== 使用者帳號 ===== -->
+      <div class="subpanel active" id="subpanel-users">
+        <div class="toolbar" style="justify-content:space-between;">
+          <div style="display:flex; gap:10px; flex-wrap:wrap; flex:1;">
+            <div class="search-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="搜尋姓名／員編／Email"></div>
+            <select class="select-box"><option>全部部門</option><option>行銷部</option><option>研發部</option><option>財務部</option></select>
+            <select class="select-box"><option>全部狀態</option><option>啟用</option><option>停用</option></select>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <button class="btn btn-outline" onclick="openImportExcelModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13M6 11l6 6 6-6M4 21h16"/></svg>匯入 Excel</button>
+            <button class="btn btn-primary" onclick="openAddAccountModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>新增帳號</button>
+          </div>
+        </div>
+        <div class="card" style="padding:0; overflow:hidden;">
+          <div class="table-wrap">
+          <table>
+            <thead><tr><th>姓名</th><th>員工編號</th><th>部門／職稱</th><th>Email</th><th>角色</th><th>狀態</th><th></th></tr></thead>
+            <tbody id="accounts-tbody">
+              <tr><td><div class="cell-name"><div class="cell-avatar">林</div><div>林怡君</div></div></td><td class="mono">E10231</td><td>行銷部・經理</td><td class="mono">yijun.lin@company.com</td><td>一般使用者</td><td><span class="badge badge-green"><span class="badge-dot"></span>啟用</span></td><td><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button></td></tr>
+              <tr><td><div class="cell-name"><div class="cell-avatar">陳</div><div>陳建宏</div></div></td><td class="mono">E10456</td><td>研發部・工程師</td><td class="mono">jh.chen@company.com</td><td>一般使用者</td><td><span class="badge badge-green"><span class="badge-dot"></span>啟用</span></td><td><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button></td></tr>
+              <tr><td><div class="cell-name"><div class="cell-avatar">王</div><div>王思穎</div></div></td><td class="mono">E10078</td><td>財務部・副理</td><td class="mono">syw@company.com</td><td>會議管理者</td><td><span class="badge badge-green"><span class="badge-dot"></span>啟用</span></td><td><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button></td></tr>
+              <tr><td><div class="cell-name"><div class="cell-avatar">張</div><div>張家豪</div></div></td><td class="mono">E10902</td><td>業務部・專員</td><td class="mono">chiahao@company.com</td><td>一般使用者</td><td><span class="badge badge-gray"><span class="badge-dot"></span>停用</span></td><td><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button></td></tr>
+              <tr><td><div class="cell-name"><div class="cell-avatar">李</div><div>李佳蓉</div></div></td><td class="mono">E11023</td><td>人資部・主任</td><td class="mono">chiajung@company.com</td><td>系統管理員</td><td><span class="badge badge-green"><span class="badge-dot"></span>啟用</span></td><td><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button></td></tr>
+              <tr><td><div class="cell-name"><div class="cell-avatar">吳</div><div>吳承翰</div></div></td><td class="mono">E10344</td><td>資訊部・工程師</td><td class="mono">chenghan@company.com</td><td>一般使用者</td><td><span class="badge badge-green"><span class="badge-dot"></span>啟用</span></td><td><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button></td></tr>
+            </tbody>
+          </table>
+          </div>
         </div>
       </div>
-      <div class="toolbar">
-        <div class="search-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="搜尋姓名／員編／Email"></div>
-        <select class="select-box"><option>全部部門</option><option>行銷部</option><option>研發部</option><option>財務部</option></select>
-        <select class="select-box"><option>全部狀態</option><option>啟用</option><option>停用</option></select>
-      </div>
-      <div class="card" style="padding:0; overflow:hidden;">
-        <div class="table-wrap">
-        <table>
-          <thead><tr><th>姓名</th><th>員工編號</th><th>部門／職稱</th><th>Email</th><th>角色</th><th>狀態</th><th></th></tr></thead>
-          <tbody id="accounts-tbody">
-            <tr><td><div class="cell-name"><div class="cell-avatar">林</div><div>林怡君</div></div></td><td class="mono">E10231</td><td>行銷部・經理</td><td class="mono">yijun.lin@company.com</td><td>一般使用者</td><td><span class="badge badge-green"><span class="badge-dot"></span>啟用</span></td><td><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button></td></tr>
-            <tr><td><div class="cell-name"><div class="cell-avatar">陳</div><div>陳建宏</div></div></td><td class="mono">E10456</td><td>研發部・工程師</td><td class="mono">jh.chen@company.com</td><td>一般使用者</td><td><span class="badge badge-green"><span class="badge-dot"></span>啟用</span></td><td><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button></td></tr>
-            <tr><td><div class="cell-name"><div class="cell-avatar">王</div><div>王思穎</div></div></td><td class="mono">E10078</td><td>財務部・副理</td><td class="mono">syw@company.com</td><td>會議管理者</td><td><span class="badge badge-green"><span class="badge-dot"></span>啟用</span></td><td><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button></td></tr>
-            <tr><td><div class="cell-name"><div class="cell-avatar">張</div><div>張家豪</div></div></td><td class="mono">E10902</td><td>業務部・專員</td><td class="mono">chiahao@company.com</td><td>一般使用者</td><td><span class="badge badge-gray"><span class="badge-dot"></span>停用</span></td><td><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button></td></tr>
-            <tr><td><div class="cell-name"><div class="cell-avatar">李</div><div>李佳蓉</div></div></td><td class="mono">E11023</td><td>人資部・主任</td><td class="mono">chiajung@company.com</td><td>系統管理員</td><td><span class="badge badge-green"><span class="badge-dot"></span>啟用</span></td><td><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button></td></tr>
-            <tr><td><div class="cell-name"><div class="cell-avatar">吳</div><div>吳承翰</div></div></td><td class="mono">E10344</td><td>資訊部・工程師</td><td class="mono">chenghan@company.com</td><td>一般使用者</td><td><span class="badge badge-green"><span class="badge-dot"></span>啟用</span></td><td><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button></td></tr>
-          </tbody>
-        </table>
+
+      <!-- ===== 系統管理員帳號 ===== -->
+      <div class="subpanel" id="subpanel-admins">
+        <div class="info-banner">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+          <div>本區塊獨立於一般使用者帳號，專門管控可登入「後台管理系統」的管理者帳密與各模組操作權限，變更將立即生效並記錄於操作紀錄。</div>
+        </div>
+        <div class="toolbar" style="justify-content:space-between;">
+          <div class="search-box" style="max-width:280px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="搜尋管理者姓名／帳號"></div>
+          <button class="btn btn-primary" onclick="openAddAdminModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>新增管理者帳號</button>
+        </div>
+        <div class="card" style="padding:0; overflow:hidden;">
+          <div class="table-wrap">
+          <table>
+            <thead><tr><th>管理者</th><th>登入帳號</th><th>權限角色</th><th>可管理模組</th><th>雙重驗證</th><th>狀態</th><th>最後登入</th><th></th></tr></thead>
+            <tbody id="admins-tbody">
+              <tr>
+                <td><div class="cell-name"><div class="cell-avatar">王</div><div>王承辦</div></div></td>
+                <td class="mono">admin.wang</td>
+                <td><span class="badge badge-amber"><span class="badge-dot"></span>超級管理員</span></td>
+                <td><div class="perm-tags"><span class="perm-tag">帳號管理</span><span class="perm-tag">會議管理</span><span class="perm-tag">QRCode 管理</span><span class="perm-tag">簽到監控</span><span class="perm-tag">報表統計</span><span class="perm-tag">系統設定</span></div></td>
+                <td><span class="badge badge-green"><span class="badge-dot"></span>已啟用</span></td>
+                <td><span class="badge badge-green"><span class="badge-dot"></span>啟用</span></td>
+                <td class="mono">07/16 09:02</td>
+                <td><div style="display:flex; gap:6px;">
+                  <button class="icon-btn" title="權限設定" onclick="openAdminPermModal('王承辦','admin.wang','超級管理員')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.34 1.87l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.7 1.7 0 00-1.87-.34 1.7 1.7 0 00-1 1.55V21a2 2 0 01-4 0v-.09a1.7 1.7 0 00-1-1.55 1.7 1.7 0 00-1.87.34l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.7 1.7 0 00.34-1.87 1.7 1.7 0 00-1.55-1H3a2 2 0 010-4h.09a1.7 1.7 0 001.55-1 1.7 1.7 0 00-.34-1.87l-.06-.06a2 2 0 112.83-2.83l.06.06a1.7 1.7 0 001.87.34H9a1.7 1.7 0 001-1.55V3a2 2 0 014 0v.09a1.7 1.7 0 001 1.55 1.7 1.7 0 001.87-.34l.06-.06a2 2 0 112.83 2.83l-.06.06a1.7 1.7 0 00-.34 1.87V9a1.7 1.7 0 001.55 1H21a2 2 0 010 4h-.09a1.7 1.7 0 00-1.55 1z"/></svg></button>
+                  <button class="icon-btn" title="重設密碼" onclick="openResetAdminPwModal('王承辦')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></button>
+                </div></td>
+              </tr>
+              <tr>
+                <td><div class="cell-name"><div class="cell-avatar">李</div><div>李佳蓉</div></div></td>
+                <td class="mono">admin.li</td>
+                <td><span class="badge badge-blue"><span class="badge-dot"></span>一般管理員</span></td>
+                <td><div class="perm-tags"><span class="perm-tag">帳號管理</span><span class="perm-tag">會議管理</span><span class="perm-tag">QRCode 管理</span></div></td>
+                <td><span class="badge badge-gray"><span class="badge-dot"></span>未啟用</span></td>
+                <td><span class="badge badge-green"><span class="badge-dot"></span>啟用</span></td>
+                <td class="mono">07/15 17:41</td>
+                <td><div style="display:flex; gap:6px;">
+                  <button class="icon-btn" title="權限設定" onclick="openAdminPermModal('李佳蓉','admin.li','一般管理員')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.34 1.87l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.7 1.7 0 00-1.87-.34 1.7 1.7 0 00-1 1.55V21a2 2 0 01-4 0v-.09a1.7 1.7 0 00-1-1.55 1.7 1.7 0 00-1.87.34l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.7 1.7 0 00.34-1.87 1.7 1.7 0 00-1.55-1H3a2 2 0 010-4h.09a1.7 1.7 0 001.55-1 1.7 1.7 0 00-.34-1.87l-.06-.06a2 2 0 112.83-2.83l.06.06a1.7 1.7 0 001.87.34H9a1.7 1.7 0 001-1.55V3a2 2 0 014 0v.09a1.7 1.7 0 001 1.55 1.7 1.7 0 001.87-.34l.06-.06a2 2 0 112.83 2.83l-.06.06a1.7 1.7 0 00-.34 1.87V9a1.7 1.7 0 001.55 1H21a2 2 0 010 4h-.09a1.7 1.7 0 00-1.55 1z"/></svg></button>
+                  <button class="icon-btn" title="重設密碼" onclick="openResetAdminPwModal('李佳蓉')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></button>
+                </div></td>
+              </tr>
+              <tr>
+                <td><div class="cell-name"><div class="cell-avatar">吳</div><div>吳承翰</div></div></td>
+                <td class="mono">admin.wu</td>
+                <td><span class="badge badge-blue"><span class="badge-dot"></span>一般管理員</span></td>
+                <td><div class="perm-tags"><span class="perm-tag">簽到監控</span><span class="perm-tag">報表統計</span></div></td>
+                <td><span class="badge badge-green"><span class="badge-dot"></span>已啟用</span></td>
+                <td><span class="badge badge-gray"><span class="badge-dot"></span>停用</span></td>
+                <td class="mono">07/09 08:55</td>
+                <td><div style="display:flex; gap:6px;">
+                  <button class="icon-btn" title="權限設定" onclick="openAdminPermModal('吳承翰','admin.wu','一般管理員')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.34 1.87l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.7 1.7 0 00-1.87-.34 1.7 1.7 0 00-1 1.55V21a2 2 0 01-4 0v-.09a1.7 1.7 0 00-1-1.55 1.7 1.7 0 00-1.87.34l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.7 1.7 0 00.34-1.87 1.7 1.7 0 00-1.55-1H3a2 2 0 010-4h.09a1.7 1.7 0 001.55-1 1.7 1.7 0 00-.34-1.87l-.06-.06a2 2 0 112.83-2.83l.06.06a1.7 1.7 0 001.87.34H9a1.7 1.7 0 001-1.55V3a2 2 0 014 0v.09a1.7 1.7 0 001 1.55 1.7 1.7 0 001.87-.34l.06-.06a2 2 0 112.83 2.83l-.06.06a1.7 1.7 0 00-.34 1.87V9a1.7 1.7 0 001.55 1H21a2 2 0 010 4h-.09a1.7 1.7 0 00-1.55 1z"/></svg></button>
+                  <button class="icon-btn" title="重設密碼" onclick="openResetAdminPwModal('吳承翰')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></button>
+                </div></td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
         </div>
       </div>
     </section>
@@ -820,6 +1012,13 @@
           <div class="toggle-row"><div><div class="t">動態刷新 QRCode</div><div class="s">每 60 秒更新一次加密內容</div></div><div class="switch on" onclick="this.classList.toggle('on')"></div></div>
           <div class="toggle-row"><div><div class="t">二次驗證</div><div class="s">掃描後需輸入員編末四碼確認身分</div></div><div class="switch" onclick="this.classList.toggle('on')"></div></div>
           <div class="toggle-row"><div><div class="t">IP／地理位置限制</div><div class="s">僅允許會議現場 Wi-Fi 範圍內完成簽到</div></div><div class="switch on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div class="t">獨立網頁模式</div><div class="s">將此 QRCode 產製成一組獨立網址，可直接於會議室螢幕、平板全螢幕開啟，無需登入後台</div></div><div class="switch on" onclick="this.classList.toggle('on')"></div></div>
+
+          <button class="btn btn-outline btn-sm" style="margin-top:16px;" onclick="openStandaloneQRPage()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>產生獨立網頁</button>
+          <div class="qr-link-box">
+            <span class="lnk" id="qr-standalone-link">https://checkin.geosmart.tw/qr/q3-mgmt-0716</span>
+            <button class="icon-btn" title="複製連結" onclick="copyQRStandaloneLink()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+          </div>
         </div>
       </div>
     </section>
@@ -1067,6 +1266,95 @@
   }
   document.documentElement.setAttribute('data-fontsize', 'medium');
 
+  /* ==================================================================
+     LOGIN / CAPTCHA
+  ================================================================== */
+  let currentCaptcha = '';
+  function randCaptchaText(){
+    const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'; // 排除易混淆字元 0/O/1/I/L
+    let s = '';
+    for(let i=0;i<4;i++) s += chars[Math.floor(Math.random()*chars.length)];
+    return s;
+  }
+  function generateCaptcha(){
+    currentCaptcha = randCaptchaText();
+    const w = 118, h = 44;
+    let svg = `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
+    svg += `<rect width="${w}" height="${h}" fill="#EDEFF6"/>`;
+    for(let i=0;i<5;i++){
+      const x1=(Math.random()*w).toFixed(1), y1=(Math.random()*h).toFixed(1), x2=(Math.random()*w).toFixed(1), y2=(Math.random()*h).toFixed(1);
+      const c = ['#C7CCDD','#D8C79B','#B9C7DD'][i%3];
+      svg += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="1.2"/>`;
+    }
+    for(let i=0;i<16;i++){
+      const cx=(Math.random()*w).toFixed(1), cy=(Math.random()*h).toFixed(1);
+      svg += `<circle cx="${cx}" cy="${cy}" r="0.8" fill="#B7BCD0"/>`;
+    }
+    const colors = ['#16213E','#1E2E52','#B8690E','#28365E'];
+    const seg = w/(currentCaptcha.length+1);
+    for(let i=0;i<currentCaptcha.length;i++){
+      const ch = currentCaptcha[i];
+      const x = (seg*(i+0.85)).toFixed(1);
+      const y = (h/2 + (Math.random()*8-4)).toFixed(1);
+      const rot = (Math.random()*34-17).toFixed(1);
+      const size = (21 + Math.random()*4).toFixed(1);
+      const col = colors[i%colors.length];
+      svg += `<text x="${x}" y="${y}" font-family="'IBM Plex Mono',monospace" font-size="${size}" font-weight="700" fill="${col}" transform="rotate(${rot} ${x} ${y})" text-anchor="middle" dominant-baseline="middle">${ch}</text>`;
+    }
+    svg += `</svg>`;
+    document.getElementById('captcha-img').innerHTML = svg +
+      `<div class="captcha-refresh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>`;
+    const capInput = document.getElementById('login-captcha');
+    if(capInput) capInput.value = '';
+  }
+  function toggleLoginPw(){
+    const inp = document.getElementById('login-pass');
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+  }
+  function showLoginError(msg){
+    const box = document.getElementById('login-error');
+    document.getElementById('login-error-text').textContent = msg;
+    box.classList.add('show');
+    const card = document.querySelector('.login-card');
+    card.classList.remove('login-shake'); void card.offsetWidth; card.classList.add('login-shake');
+  }
+  function doLogin(){
+    const user = document.getElementById('login-user').value.trim();
+    const pass = document.getElementById('login-pass').value.trim();
+    const code = document.getElementById('login-captcha').value.trim();
+    if(!user || !pass){ showLoginError('請輸入帳號與密碼'); return; }
+    if(code.toUpperCase() !== currentCaptcha){
+      showLoginError('圖形驗證碼輸入錯誤，請重新輸入');
+      generateCaptcha();
+      return;
+    }
+    document.getElementById('login-error').classList.remove('show');
+    document.getElementById('login-shell').style.display = 'none';
+    document.getElementById('mode-bar').style.display = 'flex';
+    document.getElementById('topbar-avatar').textContent = user.charAt(0).toUpperCase();
+    setMode('admin');
+    setTimeout(()=>showToast(`登入成功，歡迎回來，${user}`), 150);
+  }
+  function skipLoginToFrontend(){
+    document.getElementById('login-shell').style.display = 'none';
+    document.getElementById('mode-bar').style.display = 'flex';
+    setMode('fe');
+  }
+  function doLogout(){
+    document.getElementById('mode-bar').style.display = 'none';
+    document.getElementById('admin-shell').style.display = 'none';
+    document.getElementById('frontend-shell').style.display = 'none';
+    document.getElementById('login-shell').style.display = 'flex';
+    document.getElementById('login-user').value = '';
+    document.getElementById('login-pass').value = '';
+    document.getElementById('login-error').classList.remove('show');
+    generateCaptcha();
+  }
+  generateCaptcha();
+  ['login-user','login-pass','login-captcha'].forEach(id=>{
+    document.getElementById(id).addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
+  });
+
   // ---------- mode switch ----------
   function setMode(mode){
     document.getElementById('admin-shell').style.display = mode==='admin' ? 'grid' : 'none';
@@ -1089,10 +1377,20 @@
   }
 
   // meeting selector highlight (qrcode page)
+  const meetingSlugs = {
+    '部門主管會議':'q3-mgmt-0716',
+    '資安教育訓練':'sec-training-0722',
+    '董事會議':'board-0725',
+    '年度策略共識營':'strategy-camp-0803'
+  };
   document.querySelectorAll('.meeting-select-item').forEach(item=>{
     item.addEventListener('click', ()=>{
       document.querySelectorAll('.meeting-select-item').forEach(i=>i.classList.remove('active'));
       item.classList.add('active');
+      const name = item.querySelector('.t').textContent;
+      const slug = meetingSlugs[name] || 'meeting-' + Math.random().toString(16).slice(2,8);
+      const linkEl = document.getElementById('qr-standalone-link');
+      if(linkEl) linkEl.textContent = 'https://checkin.geosmart.tw/qr/' + slug;
     });
   });
 
@@ -1128,6 +1426,71 @@
     document.getElementById('qr-token').textContent = 'token: ' + tok + '...';
   }
   generateQR();
+
+  /* ==================================================================
+     QRCode 獨立網頁模式
+  ================================================================== */
+  function buildStandaloneQRHtml(meetingName, link){
+    return `<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${meetingName}・現場簽到 QRCode</title>
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 30% 20%,#1E2E52 0%,#16213E 55%,#0F1830 100%);
+    font-family:'Noto Sans TC',sans-serif;color:#fff;}
+  .frame{background:#fff;border-radius:20px;padding:24px;box-shadow:0 25px 70px rgba(0,0,0,.45);}
+  .grid{width:280px;height:280px;display:grid;grid-template-columns:repeat(21,1fr);grid-template-rows:repeat(21,1fr);gap:1px;}
+  .mod{background:transparent;border-radius:1px;}
+  .mod.on{background:#16213E;}
+  h1{font-size:20px;margin:22px 0 4px;font-weight:700;}
+  p{color:#9BA0AF;font-size:13px;margin:0 0 4px;}
+  .tok{font-family:monospace;font-size:11.5px;color:#B9C1D6;background:rgba(255,255,255,.08);padding:7px 14px;border-radius:8px;margin-top:12px;}
+  .cd{font-size:12px;color:#E2861B;margin-top:10px;font-weight:600;}
+  .lk{position:fixed;bottom:16px;font-size:11px;color:#5B6070;font-family:monospace;}
+</style></head>
+<body>
+  <div class="frame"><div class="grid" id="g"></div></div>
+  <h1>${meetingName}</h1>
+  <p>請使用手機相機或掃碼 App 掃描完成簽到</p>
+  <div class="tok" id="tok">token: --</div>
+  <div class="cd">每 60 秒自動刷新一次 · <span id="cd">60</span> 秒後更新</div>
+  <div class="lk">${link}</div>
+<` + `script>
+  function buildFinder(grid,ox,oy){for(let y=0;y<7;y++)for(let x=0;x<7;x++){const b=(x===0||x===6||y===0||y===6);const i=(x>=2&&x<=4&&y>=2&&y<=4);grid[oy+y][ox+x]=(b||i)?1:0;}}
+  function render(){
+    const N=21;let grid=Array.from({length:N},()=>Array(N).fill(0));
+    for(let y=0;y<N;y++)for(let x=0;x<N;x++)grid[y][x]=Math.random()>0.58?1:0;
+    buildFinder(grid,0,0);buildFinder(grid,N-7,0);buildFinder(grid,0,N-7);
+    const c=document.getElementById('g');c.innerHTML='';
+    for(let y=0;y<N;y++)for(let x=0;x<N;x++){const d=document.createElement('div');d.className='mod'+(grid[y][x]?' on':'');c.appendChild(d);}
+    const chars='0123456789abcdef';let t='';for(let i=0;i<16;i++)t+=chars[Math.floor(Math.random()*16)];
+    document.getElementById('tok').textContent='token: '+t+'...';
+  }
+  render();
+  let s=60;
+  setInterval(()=>{ s--; if(s<=0){s=60; render();} document.getElementById('cd').textContent=s; },1000);
+<` + `/script>
+</body></html>`;
+  }
+  function openStandaloneQRPage(){
+    const activeItem = document.querySelector('.meeting-select-item.active .t');
+    const meetingName = activeItem ? activeItem.textContent : '部門主管會議';
+    const link = document.getElementById('qr-standalone-link').textContent;
+    const html = buildStandaloneQRHtml(meetingName, link);
+    const blob = new Blob([html], {type:'text/html'});
+    const url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+    showToast('已在新分頁開啟獨立簽到網頁（此連結不需登入後台即可存取）');
+  }
+  function copyQRStandaloneLink(){
+    const text = document.getElementById('qr-standalone-link').textContent;
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(()=>showToast('已複製獨立網頁連結')).catch(()=>showToast('已複製獨立網頁連結'));
+    } else {
+      showToast('已複製獨立網頁連結');
+    }
+  }
 
   // countdown ring
   let qrSeconds = 60;
@@ -1371,6 +1734,127 @@
     tr.innerHTML = `<td><div class="cell-name"><div class="cell-avatar">${name.charAt(0)}</div><div>${name}</div></div></td><td class="mono">${no}</td><td>${dept}・${title}</td><td class="mono">${email}</td><td>${role}</td><td><span class="badge badge-green"><span class="badge-dot"></span>啟用</span></td><td><button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button></td>`;
     tbody.prepend(tr);
     showToast(`帳號已新增：${name}`);
+  }
+
+  /* ==================================================================
+     2b. 帳號管理－子頁籤（使用者帳號／系統管理員帳號）
+  ================================================================== */
+  function showAccountsTab(tab){
+    document.getElementById('subtab-users').classList.toggle('active', tab==='users');
+    document.getElementById('subtab-admins').classList.toggle('active', tab==='admins');
+    document.getElementById('subpanel-users').classList.toggle('active', tab==='users');
+    document.getElementById('subpanel-admins').classList.toggle('active', tab==='admins');
+  }
+
+  const ALL_MODULES = ['帳號管理','會議管理','QRCode 管理','簽到監控','報表統計','系統設定'];
+  function permCheckboxesHtml(checkedList){
+    return ALL_MODULES.map(m=>{
+      const checked = checkedList.includes(m) ? 'checked' : '';
+      return `<label class="checkbox-row" style="padding:5px 2px;"><input type="checkbox" class="perm-cb" value="${m}" ${checked}> ${m}</label>`;
+    }).join('');
+  }
+
+  function openAddAdminModal(){
+    const body = `
+      <div class="form-grid-2">
+        <div class="form-row"><label>管理者姓名</label><input class="form-input" id="adm-name" placeholder="例如：陳建宏"></div>
+        <div class="form-row"><label>登入帳號</label><input class="form-input mono" id="adm-user" placeholder="例如：admin.chen"></div>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-row"><label>初始密碼</label><input class="form-input" id="adm-pass" type="text" placeholder="至少 8 碼，含英數字"></div>
+        <div class="form-row"><label>權限角色</label><select class="form-select" id="adm-role" onchange="onAdminRoleChange(this)">
+          <option value="一般管理員">一般管理員（自訂模組權限）</option>
+          <option value="超級管理員">超級管理員（全模組＋管理者帳號設定）</option>
+        </select></div>
+      </div>
+      <div class="form-row" id="adm-perm-row">
+        <label>可管理模組</label>
+        <div class="perm-matrix" id="adm-perm-matrix">${permCheckboxesHtml(['帳號管理','會議管理'])}</div>
+        <div class="role-note">超級管理員固定擁有全部模組權限，含「系統管理員帳號」設定本身。</div>
+      </div>
+      <label class="checkbox-row"><input type="checkbox" id="adm-2fa"> 強制要求此帳號登入時啟用圖形驗證碼二次確認</label>
+      <label class="checkbox-row"><input type="checkbox" checked id="adm-active"> 啟用此管理者帳號</label>`;
+    const footer = `
+      <button class="btn btn-outline" onclick="closeModal()">取消</button>
+      <button class="btn btn-primary" onclick="submitAdmin()">新增管理者帳號</button>`;
+    openModal('新增系統管理員帳號', '設定可登入後台管理系統的帳密與模組操作權限', body, footer, 'lg');
+  }
+  function onAdminRoleChange(sel){
+    const isSuper = sel.value === '超級管理員';
+    document.getElementById('adm-perm-matrix').querySelectorAll('.perm-cb').forEach(cb=>{
+      cb.checked = isSuper ? true : cb.checked;
+      cb.disabled = isSuper;
+    });
+  }
+  function submitAdmin(){
+    const name = document.getElementById('adm-name').value.trim() || '新管理者';
+    const user = document.getElementById('adm-user').value.trim() || ('admin.' + name.charAt(0));
+    const role = document.getElementById('adm-role').value;
+    const mods = role === '超級管理員' ? ALL_MODULES : Array.from(document.querySelectorAll('#adm-perm-matrix .perm-cb:checked')).map(cb=>cb.value);
+    const tfa = document.getElementById('adm-2fa').checked;
+    closeModal();
+    const tbody = document.getElementById('admins-tbody');
+    const tr = document.createElement('tr');
+    tr.className = 'new-row';
+    const roleBadge = role === '超級管理員' ? `<span class="badge badge-amber"><span class="badge-dot"></span>超級管理員</span>` : `<span class="badge badge-blue"><span class="badge-dot"></span>一般管理員</span>`;
+    const tagsHtml = mods.map(m=>`<span class="perm-tag">${m}</span>`).join('');
+    tr.innerHTML = `<td><div class="cell-name"><div class="cell-avatar">${name.charAt(0)}</div><div>${name}</div></div></td><td class="mono">${user}</td><td>${roleBadge}</td><td><div class="perm-tags">${tagsHtml}</div></td><td>${tfa ? '<span class="badge badge-green"><span class="badge-dot"></span>已啟用</span>' : '<span class="badge badge-gray"><span class="badge-dot"></span>未啟用</span>'}</td><td><span class="badge badge-green"><span class="badge-dot"></span>啟用</span></td><td class="mono">尚未登入</td><td><div style="display:flex; gap:6px;"><button class="icon-btn" title="權限設定" onclick="openAdminPermModal('${name}','${user}','${role}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg></button><button class="icon-btn" title="重設密碼" onclick="openResetAdminPwModal('${name}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></button></div></td>`;
+    tbody.prepend(tr);
+    showToast(`已新增系統管理員帳號：${name}（${user}）`);
+  }
+
+  function openAdminPermModal(name, user, role){
+    const currentMods = role === '超級管理員' ? ALL_MODULES : ['帳號管理','會議管理','QRCode 管理'];
+    const body = `
+      <div class="info-banner">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+        <div>正在設定 <b>${name}（${user}）</b> 的權限角色與可操作模組，儲存後立即生效。</div>
+      </div>
+      <div class="form-row"><label>權限角色</label><select class="form-select" id="perm-role" onchange="onAdminRoleChangePerm(this)">
+        <option value="一般管理員" ${role!=='超級管理員'?'selected':''}>一般管理員（自訂模組權限）</option>
+        <option value="超級管理員" ${role==='超級管理員'?'selected':''}>超級管理員（全模組＋管理者帳號設定）</option>
+      </select></div>
+      <div class="form-row">
+        <label>可管理模組</label>
+        <div class="perm-matrix" id="perm-matrix">${permCheckboxesHtml(currentMods)}</div>
+      </div>
+      <label class="checkbox-row"><input type="checkbox" id="perm-2fa"> 強制要求此帳號登入時啟用圖形驗證碼二次確認</label>`;
+    const footer = `
+      <button class="btn btn-outline" onclick="closeModal()">取消</button>
+      <button class="btn btn-primary" onclick="submitAdminPerm('${name}')">儲存權限設定</button>`;
+    openModal('管理者權限設定', name, body, footer, 'lg');
+    onAdminRoleChangePerm(document.getElementById('perm-role'));
+  }
+  function onAdminRoleChangePerm(sel){
+    const isSuper = sel.value === '超級管理員';
+    document.getElementById('perm-matrix').querySelectorAll('.perm-cb').forEach(cb=>{
+      cb.checked = isSuper ? true : cb.checked;
+      cb.disabled = isSuper;
+    });
+  }
+  function submitAdminPerm(name){
+    closeModal();
+    showToast(`已更新 ${name} 的權限設定`);
+  }
+
+  function openResetAdminPwModal(name){
+    const tempPw = 'Tmp' + Math.random().toString(36).slice(-6).toUpperCase() + '!';
+    const body = `
+      <div class="info-banner">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+        <div>即將為 <b>${name}</b> 重設登入密碼，系統將產生一組臨時密碼，請安全轉知本人。</div>
+      </div>
+      <div class="form-row"><label>臨時密碼</label><input class="form-input mono" value="${tempPw}" readonly></div>
+      <label class="checkbox-row"><input type="checkbox" checked> 要求下次登入時強制變更密碼</label>
+      <label class="checkbox-row"><input type="checkbox"> 同時停用此帳號目前的登入 Session</label>`;
+    const footer = `
+      <button class="btn btn-outline" onclick="closeModal()">取消</button>
+      <button class="btn btn-primary" onclick="submitResetAdminPw('${name}')">確認重設密碼</button>`;
+    openModal('重設管理者密碼', name, body, footer, 'sm');
+  }
+  function submitResetAdminPw(name){
+    closeModal();
+    showToast(`已重設 ${name} 的登入密碼，並通知本人`);
   }
 
   /* ==================================================================
